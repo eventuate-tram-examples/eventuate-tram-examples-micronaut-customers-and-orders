@@ -1,0 +1,12 @@
+include 'common'
+include 'customer-backend'
+include 'customer-web-api'
+include 'customer-service'
+include 'order-backend'
+include 'order-web-api'
+include 'order-service'
+include 'order-history-common'
+include 'order-history-service'
+include 'order-history-backend'
+include 'end-to-end-tests'
+
