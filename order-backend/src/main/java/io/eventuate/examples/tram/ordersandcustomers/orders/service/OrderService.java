@@ -1,35 +1,43 @@
 package io.eventuate.examples.tram.ordersandcustomers.orders.service;
 
-import io.eventuate.examples.tram.ordersandcustomers.commondomain.*;
+import io.eventuate.examples.tram.ordersandcustomers.commondomain.MoneyDTO;
+import io.eventuate.examples.tram.ordersandcustomers.commondomain.OrderApprovedEvent;
+import io.eventuate.examples.tram.ordersandcustomers.commondomain.OrderDetailsDTO;
+import io.eventuate.examples.tram.ordersandcustomers.commondomain.OrderRejectedEvent;
 import io.eventuate.examples.tram.ordersandcustomers.orders.domain.Order;
-import io.eventuate.examples.tram.ordersandcustomers.orders.domain.OrderRepository;
 import io.eventuate.tram.events.publisher.DomainEventPublisher;
 import io.eventuate.tram.events.publisher.ResultWithEvents;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
+import io.micronaut.spring.tx.annotation.Transactional;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.util.Optional;
 
 import static java.util.Collections.singletonList;
 
-@Transactional
+@Singleton
 public class OrderService {
 
-  @Autowired
+  @Inject
   private DomainEventPublisher domainEventPublisher;
 
-  @Autowired
-  private OrderRepository orderRepository;
+  @PersistenceContext
+  private EntityManager entityManager;
 
+  @Transactional
   public Order createOrder(OrderDetailsDTO orderDetails) {
     ResultWithEvents<Order> orderWithEvents = Order.createOrder(orderDetails);
     Order order = orderWithEvents.result;
-    orderRepository.save(order);
+    entityManager.persist(order);
     domainEventPublisher.publish(Order.class, order.getId(), orderWithEvents.events);
     return order;
   }
 
+  @Transactional
   public void approveOrder(Long orderId) {
-    Order order = orderRepository
-            .findById(orderId)
+    Order order = Optional.ofNullable(entityManager.find(Order.class, orderId))
             .orElseThrow(() -> new IllegalArgumentException(String.format("order with id %s not found", orderId)));
     order.noteCreditReserved();
     OrderDetailsDTO orderDetails = new OrderDetailsDTO(order.getOrderDetails().getCustomerId(), new MoneyDTO(order.getOrderDetails().getOrderTotal().getAmount()));
@@ -37,9 +45,10 @@ public class OrderService {
             orderId, singletonList(new OrderApprovedEvent(orderDetails)));
   }
 
+  @Transactional
   public void rejectOrder(Long orderId) {
-    Order order = orderRepository
-            .findById(orderId)
+    Order order = Optional
+            .ofNullable(entityManager.find(Order.class, orderId))
             .orElseThrow(() -> new IllegalArgumentException(String.format("order with id %s not found", orderId)));
     order.noteCreditReservationFailed();
     OrderDetailsDTO orderDetails = new OrderDetailsDTO(order.getOrderDetails().getCustomerId(), new MoneyDTO(order.getOrderDetails().getOrderTotal().getAmount()));

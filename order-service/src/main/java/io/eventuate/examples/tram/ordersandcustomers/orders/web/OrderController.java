@@ -1,40 +1,42 @@
 package io.eventuate.examples.tram.ordersandcustomers.orders.web;
 
 import io.eventuate.examples.tram.ordersandcustomers.commondomain.OrderDetailsDTO;
-import io.eventuate.examples.tram.ordersandcustomers.orders.domain.OrderRepository;
+import io.eventuate.examples.tram.ordersandcustomers.orders.domain.Order;
 import io.eventuate.examples.tram.ordersandcustomers.orders.service.OrderService;
+import io.eventuate.examples.tram.ordersandcustomers.orders.webapi.CreateOrderRequest;
 import io.eventuate.examples.tram.ordersandcustomers.orders.webapi.CreateOrderResponse;
 import io.eventuate.examples.tram.ordersandcustomers.orders.webapi.GetOrderResponse;
-import io.eventuate.examples.tram.ordersandcustomers.orders.domain.Order;
-import io.eventuate.examples.tram.ordersandcustomers.orders.webapi.CreateOrderRequest;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import io.micronaut.http.HttpResponse;
+import io.micronaut.http.annotation.Controller;
+import io.micronaut.http.annotation.Get;
+import io.micronaut.http.annotation.Post;
+import io.micronaut.spring.tx.annotation.Transactional;
 
-@RestController
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.util.Optional;
+
+@Controller
 public class OrderController {
 
+  @Inject
   private OrderService orderService;
-  private OrderRepository orderRepository;
 
-  @Autowired
-  public OrderController(OrderService orderService, OrderRepository orderRepository) {
-    this.orderService = orderService;
-    this.orderRepository = orderRepository;
-  }
+  @PersistenceContext
+  private EntityManager entityManager;
 
-  @RequestMapping(value = "/orders", method = RequestMethod.POST)
-  public CreateOrderResponse createOrder(@RequestBody CreateOrderRequest createOrderRequest) {
+  @Post(value = "/orders")
+  public CreateOrderResponse createOrder(CreateOrderRequest createOrderRequest) {
     Order order = orderService.createOrder(new OrderDetailsDTO(createOrderRequest.getCustomerId(), createOrderRequest.getOrderTotal()));
     return new CreateOrderResponse(order.getId());
   }
 
-  @RequestMapping(value="/orders/{orderId}", method= RequestMethod.GET)
-  public ResponseEntity<GetOrderResponse> getOrder(@PathVariable Long orderId) {
-     return orderRepository
-            .findById(orderId)
-            .map(order -> new ResponseEntity<>(new GetOrderResponse(order.getId(), order.getState()), HttpStatus.OK))
-            .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+  @Get("/orders/{orderId}")
+  @Transactional
+  public HttpResponse<GetOrderResponse> getOrder(Long orderId) {
+     return Optional.ofNullable(entityManager.find(Order.class, orderId))
+            .map(order -> HttpResponse.ok(new GetOrderResponse(order.getId(), order.getState())))
+            .orElseGet(HttpResponse::notFound);
   }
 }

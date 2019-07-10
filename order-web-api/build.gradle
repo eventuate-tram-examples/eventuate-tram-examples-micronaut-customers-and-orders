@@ -1,6 +1,5 @@
 dependencies {
     compile project(":common")
-    compile project(":order-backend")
 }
 
 
