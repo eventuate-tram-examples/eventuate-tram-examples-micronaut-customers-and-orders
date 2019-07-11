@@ -16,6 +16,7 @@ dependencyManagement {
 dependencies {
     compile project(":common")
 
+    compile "io.eventuate.tram.core:eventuate-tram-consumer-jdbc-micronaut:$eventuateTramVersion"
     compile "io.eventuate.tram.core:eventuate-tram-producer-jdbc-micronaut:$eventuateTramVersion"
     compile "io.eventuate.tram.core:eventuate-tram-messaging-micronaut:$eventuateTramVersion"
     compile "io.eventuate.tram.core:eventuate-tram-consumer-kafka-micronaut:$eventuateTramVersion"

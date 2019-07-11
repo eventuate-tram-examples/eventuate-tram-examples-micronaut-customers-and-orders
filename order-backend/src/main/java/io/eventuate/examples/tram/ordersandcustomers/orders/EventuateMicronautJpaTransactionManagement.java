@@ -1,6 +1,7 @@
 package io.eventuate.examples.tram.ordersandcustomers.orders;
 
 import io.eventuate.common.jdbc.micronaut.EventuateMicronautTransactionManagement;
+import io.micronaut.spring.tx.annotation.Transactional;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 
 import javax.inject.Inject;
@@ -16,6 +17,7 @@ public class EventuateMicronautJpaTransactionManagement implements EventuateMicr
   private DataSource dataSource;
 
   @Override
+  @Transactional
   public void doWithTransaction(Consumer<Connection> consumer) {
     consumer.accept(DataSourceUtils.getConnection(dataSource));
   }
