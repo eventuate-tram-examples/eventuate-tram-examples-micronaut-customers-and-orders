@@ -6,7 +6,6 @@ import io.eventuate.tram.events.subscriber.DomainEventDispatcherFactory;
 import io.micronaut.context.annotation.Factory;
 import org.hibernate.SessionFactory;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
-import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.inject.Singleton;

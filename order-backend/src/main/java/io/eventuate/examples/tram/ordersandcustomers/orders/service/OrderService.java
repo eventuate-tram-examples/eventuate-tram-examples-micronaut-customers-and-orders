@@ -28,7 +28,6 @@ public class OrderService {
 
   @Transactional
   public Order createOrder(OrderDetailsDTO orderDetails) {
-    entityManager.joinTransaction();
     ResultWithEvents<Order> orderWithEvents = Order.createOrder(orderDetails);
     Order order = orderWithEvents.result;
     entityManager.persist(order);
