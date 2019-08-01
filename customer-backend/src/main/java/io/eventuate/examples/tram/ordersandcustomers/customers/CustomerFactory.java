@@ -7,6 +7,7 @@ import io.micronaut.context.annotation.Factory;
 import org.hibernate.SessionFactory;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.inject.Singleton;
@@ -21,7 +22,7 @@ public class CustomerFactory {
   }
 
   @Singleton
-  public TransactionTemplate transactionTemplate(SessionFactory sessionFactory) {
-    return new TransactionTemplate(new HibernateTransactionManager(sessionFactory));
+  public TransactionTemplate transactionTemplate(PlatformTransactionManager transactionManager) {
+    return new TransactionTemplate(transactionManager);
   }
 }

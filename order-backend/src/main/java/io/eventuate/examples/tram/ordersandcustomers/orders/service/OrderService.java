@@ -26,6 +26,7 @@ public class OrderService {
   @PersistenceContext
   private EntityManager entityManager;
 
+  @Transactional
   public Order createOrder(OrderDetailsDTO orderDetails) {
     ResultWithEvents<Order> orderWithEvents = Order.createOrder(orderDetails);
     Order order = orderWithEvents.result;
