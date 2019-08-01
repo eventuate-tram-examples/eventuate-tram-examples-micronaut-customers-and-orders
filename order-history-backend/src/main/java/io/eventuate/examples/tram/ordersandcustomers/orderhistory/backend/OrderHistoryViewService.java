@@ -2,16 +2,14 @@ package io.eventuate.examples.tram.ordersandcustomers.orderhistory.backend;
 
 import io.eventuate.examples.tram.ordersandcustomers.commondomain.MoneyDTO;
 import io.eventuate.examples.tram.ordersandcustomers.commondomain.OrderState;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
 
 public class OrderHistoryViewService {
 
   private CustomerViewRepository customerViewRepository;
   private OrderViewRepository orderViewRepository;
 
-  @Autowired
-  public OrderHistoryViewService(CustomerViewRepository customerViewRepository, OrderViewRepository orderViewRepository, MongoTemplate mongoTemplate) {
+  public OrderHistoryViewService(CustomerViewRepository customerViewRepository,
+                                 OrderViewRepository orderViewRepository) {
     this.customerViewRepository = customerViewRepository;
     this.orderViewRepository = orderViewRepository;
   }

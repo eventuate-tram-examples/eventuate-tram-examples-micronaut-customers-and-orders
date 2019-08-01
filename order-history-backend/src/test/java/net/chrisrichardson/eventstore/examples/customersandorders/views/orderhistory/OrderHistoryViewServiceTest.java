@@ -2,31 +2,29 @@ package net.chrisrichardson.eventstore.examples.customersandorders.views.orderhi
 
 import io.eventuate.examples.tram.ordersandcustomers.commondomain.MoneyDTO;
 import io.eventuate.examples.tram.ordersandcustomers.commondomain.OrderState;
-import io.eventuate.examples.tram.ordersandcustomers.orderhistory.common.CustomerView;
-import io.eventuate.examples.tram.ordersandcustomers.orderhistory.common.OrderView;
 import io.eventuate.examples.tram.ordersandcustomers.orderhistory.backend.CustomerViewRepository;
 import io.eventuate.examples.tram.ordersandcustomers.orderhistory.backend.OrderHistoryViewService;
 import io.eventuate.examples.tram.ordersandcustomers.orderhistory.backend.OrderViewRepository;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import io.eventuate.examples.tram.ordersandcustomers.orderhistory.common.CustomerView;
+import io.eventuate.examples.tram.ordersandcustomers.orderhistory.common.OrderView;
+import io.micronaut.test.annotation.MicronautTest;
+import org.junit.jupiter.api.Test;
+
+import javax.inject.Inject;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OrderHistoryViewServiceTestConfiguration.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@MicronautTest
 public class OrderHistoryViewServiceTest {
 
-  @Autowired
+  @Inject
   private OrderHistoryViewService orderHistoryViewService;
 
-  @Autowired
+  @Inject
   private CustomerViewRepository customerViewRepository;
 
-  @Autowired
+  @Inject
   private OrderViewRepository orderViewRepository;
 
   @Test

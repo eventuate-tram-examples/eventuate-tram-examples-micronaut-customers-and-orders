@@ -19,8 +19,7 @@ docker-compose -f docker-compose-${DATABASE?}${MODE?}.yml up -d --build cdcservi
 
 docker-compose -f docker-compose-${DATABASE?}${MODE?}.yml up -d --build
 
-./wait-for-services.sh $DOCKER_HOST_IP "8083" "actuator/health"
-./wait-for-services.sh $DOCKER_HOST_IP "8081 8082" "health"
+./wait-for-services.sh $DOCKER_HOST_IP "8081 8082 8083" "health"
 
 ./gradlew :end-to-end-tests:cleanTest :end-to-end-tests:test
 

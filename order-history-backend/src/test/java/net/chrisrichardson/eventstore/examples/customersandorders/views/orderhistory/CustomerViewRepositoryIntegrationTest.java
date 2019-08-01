@@ -1,22 +1,19 @@
 package net.chrisrichardson.eventstore.examples.customersandorders.views.orderhistory;
 
 import io.eventuate.examples.tram.ordersandcustomers.commondomain.MoneyDTO;
-import io.eventuate.examples.tram.ordersandcustomers.orderhistory.common.CustomerView;
 import io.eventuate.examples.tram.ordersandcustomers.orderhistory.backend.CustomerViewRepository;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import io.eventuate.examples.tram.ordersandcustomers.orderhistory.common.CustomerView;
+import io.micronaut.test.annotation.MicronautTest;
+import org.junit.jupiter.api.Test;
+
+import javax.inject.Inject;
 
 import static org.junit.Assert.assertEquals;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OrderHistoryViewServiceTestConfiguration.class,
-        webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@MicronautTest
 public class CustomerViewRepositoryIntegrationTest {
 
-  @Autowired
+  @Inject
   private CustomerViewRepository customerViewRepository;
 
   @Test

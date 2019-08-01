@@ -6,11 +6,14 @@ import io.eventuate.examples.tram.ordersandcustomers.commondomain.OrderRejectedE
 import io.eventuate.tram.events.subscriber.DomainEventEnvelope;
 import io.eventuate.tram.events.subscriber.DomainEventHandlers;
 import io.eventuate.tram.events.subscriber.DomainEventHandlersBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+@Singleton
 public class OrderHistoryEventConsumer {
 
-  @Autowired
+  @Inject
   private OrderHistoryViewService orderHistoryViewService;
 
   public DomainEventHandlers domainEventHandlers() {

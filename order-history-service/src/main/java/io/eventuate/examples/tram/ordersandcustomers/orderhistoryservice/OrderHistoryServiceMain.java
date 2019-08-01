@@ -1,16 +1,11 @@
 package io.eventuate.examples.tram.ordersandcustomers.orderhistoryservice;
 
-import io.eventuate.examples.tram.ordersandcustomers.orderhistory.backend.OrderHistoryViewBackendConfiguration;
-import io.eventuate.examples.tram.ordersandcustomers.orderhistoryservice.web.OrderHistoryViewWebConfiguration;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Import;
+import io.micronaut.runtime.Micronaut;
 
-@SpringBootApplication
-@Import({OrderHistoryViewWebConfiguration.class, OrderHistoryViewBackendConfiguration.class})
 public class OrderHistoryServiceMain {
 
   public static void main(String[] args) {
-    SpringApplication.run(OrderHistoryServiceMain.class, args);
+    Micronaut.run(OrderHistoryServiceMain.class);
   }
+
 }

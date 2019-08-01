@@ -8,6 +8,10 @@ buildscript {
     }
 }
 
+plugins {
+    id "io.spring.dependency-management"
+}
+
 apply plugin: VerifyMongoDBConfigurationPlugin
 
 apply plugin: 'docker-compose'
@@ -18,17 +22,37 @@ dockerCompose {
     useComposeFiles = ['docker-compose-integration-tests.yml']
 }
 
+dependencyManagement {
+    imports {
+        mavenBom 'io.micronaut:micronaut-bom:1.1.0'
+    }
+}
+
 dependencies {
     compile project(":order-history-common")
 
-    compile "io.eventuate.tram.core:eventuate-tram-messaging-spring:$eventuateTramVersion"
-    compile "io.eventuate.tram.core:eventuate-tram-events-spring:$eventuateTramVersion"
-    compile "io.eventuate.tram.core:eventuate-tram-jdbc-kafka-spring:$eventuateTramVersion"
+    compile "org.mongodb:mongo-java-driver"
+    compile 'io.micronaut.configuration:micronaut-mongo-reactive'
 
-    compile "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
-    compile "org.springframework.boot:spring-boot-starter-actuator:$springBootVersion"
-    compile "org.springframework.boot:spring-boot-starter-data-mongodb:$springBootVersion"
+    compile "io.eventuate.tram.core:eventuate-tram-messaging-micronaut:$eventuateTramVersion"
+    compile "io.eventuate.tram.core:eventuate-tram-events-micronaut:$eventuateTramVersion"
+    compile "io.eventuate.tram.core:eventuate-tram-consumer-kafka-micronaut:$eventuateTramVersion"
 
-    testCompile "junit:junit:4.12"
-    testCompile "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
+    compile "io.micronaut:micronaut-spring"
+    annotationProcessor "io.micronaut:micronaut-inject-java"
+    annotationProcessor "io.micronaut:micronaut-validation"
+    annotationProcessor "io.micronaut.configuration:micronaut-openapi"
+    compile "io.micronaut:micronaut-inject"
+    compile "io.micronaut:micronaut-validation"
+    compile "io.micronaut:micronaut-runtime"
+
+    testAnnotationProcessor "io.micronaut:micronaut-inject-java"
+    testCompile "org.junit.jupiter:junit-jupiter-api"
+    testCompile "io.micronaut.test:micronaut-test-junit5"
+    testRuntime "org.junit.jupiter:junit-jupiter-engine"
+}
+
+// use JUnit 5 platform
+test {
+    useJUnitPlatform()
 }

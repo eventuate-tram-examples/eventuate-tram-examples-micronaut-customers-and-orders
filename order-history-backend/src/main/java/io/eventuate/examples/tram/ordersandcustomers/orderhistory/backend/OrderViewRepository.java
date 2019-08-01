@@ -1,7 +1,35 @@
 package io.eventuate.examples.tram.ordersandcustomers.orderhistory.backend;
 
+import io.eventuate.examples.tram.ordersandcustomers.commondomain.MoneyDTO;
+import io.eventuate.examples.tram.ordersandcustomers.commondomain.OrderState;
 import io.eventuate.examples.tram.ordersandcustomers.orderhistory.common.OrderView;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 
-public interface OrderViewRepository extends MongoRepository<OrderView, Long>, OrderViewRepositoryCustom {
+import java.util.Optional;
+
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+
+public class OrderViewRepository {
+
+  private MongoTemplate mongoTemplate;
+
+  public OrderViewRepository(MongoTemplate mongoTemplate) {
+    this.mongoTemplate = mongoTemplate;
+  }
+
+  public Optional<OrderView> findById(Long orderId) {
+    return Optional.ofNullable(mongoTemplate.findById(orderId, OrderView.class));
+  }
+
+  public void addOrder(Long orderId, MoneyDTO orderTotal) {
+    mongoTemplate.upsert(new Query(where("id").is(orderId)),
+            new Update().set("orderTotal", orderTotal), OrderView.class);
+  }
+
+  public void updateOrderState(Long orderId, OrderState state) {
+    mongoTemplate.updateFirst(new Query(where("id").is(orderId)),
+            new Update().set("state", state), OrderView.class);
+  }
 }
