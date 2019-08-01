@@ -21,6 +21,7 @@ dependencies {
     compile "io.eventuate.tram.core:eventuate-tram-messaging-micronaut:$eventuateTramVersion"
     compile "io.eventuate.tram.core:eventuate-tram-consumer-kafka-micronaut:$eventuateTramVersion"
     compile "io.eventuate.tram.core:eventuate-tram-events-micronaut:$eventuateTramVersion"
+    compile "io.micronaut:micronaut-spring"
 
     runtime 'mysql:mysql-connector-java:5.1.36'
     runtime ('org.postgresql:postgresql:9.4-1200-jdbc41') {

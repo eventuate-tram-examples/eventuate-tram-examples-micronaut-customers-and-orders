@@ -1,0 +1,8 @@
+endpoints:
+  health:
+    enabled: true
+    sensitive: false
+    details-visible: ANONYMOUS
+mongodb:
+  uri: mongodb://mongodb/customers_and_orders
+
