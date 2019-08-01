@@ -26,7 +26,6 @@ public class OrderService {
   @PersistenceContext
   private EntityManager entityManager;
 
-  @Transactional
   public Order createOrder(OrderDetailsDTO orderDetails) {
     ResultWithEvents<Order> orderWithEvents = Order.createOrder(orderDetails);
     Order order = orderWithEvents.result;
@@ -35,7 +34,6 @@ public class OrderService {
     return order;
   }
 
-  @Transactional
   public void approveOrder(Long orderId) {
     Order order = Optional.ofNullable(entityManager.find(Order.class, orderId))
             .orElseThrow(() -> new IllegalArgumentException(String.format("order with id %s not found", orderId)));
@@ -45,7 +43,6 @@ public class OrderService {
             orderId, singletonList(new OrderApprovedEvent(orderDetails)));
   }
 
-  @Transactional
   public void rejectOrder(Long orderId) {
     Order order = Optional
             .ofNullable(entityManager.find(Order.class, orderId))
