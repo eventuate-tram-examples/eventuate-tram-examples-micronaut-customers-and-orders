@@ -1,14 +1,14 @@
 package io.eventuate.examples.tram.ordersandcustomers.endtoendtests;
 
 import io.eventuate.examples.tram.ordersandcustomers.commondomain.MoneyDTO;
+import io.eventuate.examples.tram.ordersandcustomers.commondomain.OrderState;
 import io.eventuate.examples.tram.ordersandcustomers.customers.webapi.CreateCustomerRequest;
 import io.eventuate.examples.tram.ordersandcustomers.customers.webapi.CreateCustomerResponse;
-import io.eventuate.examples.tram.ordersandcustomers.commondomain.OrderState;
+import io.eventuate.examples.tram.ordersandcustomers.orderhistory.common.CustomerView;
 import io.eventuate.examples.tram.ordersandcustomers.orderhistory.common.OrderInfo;
 import io.eventuate.examples.tram.ordersandcustomers.orders.webapi.CreateOrderRequest;
 import io.eventuate.examples.tram.ordersandcustomers.orders.webapi.CreateOrderResponse;
 import io.eventuate.examples.tram.ordersandcustomers.orders.webapi.GetOrderResponse;
-import io.eventuate.examples.tram.ordersandcustomers.orderhistory.common.CustomerView;
 import io.eventuate.util.test.async.Eventually;
 import org.junit.Assert;
 import org.junit.Test;
