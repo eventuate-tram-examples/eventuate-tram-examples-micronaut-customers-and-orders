@@ -1,6 +1,6 @@
 package io.eventuate.examples.tram.ordersandcustomers.customers.service;
 
-import io.eventuate.examples.tram.ordersandcustomers.commondomain.MoneyDTO;
+import io.eventuate.examples.tram.ordersandcustomers.commondomain.Money;
 import io.eventuate.examples.tram.ordersandcustomers.customers.domain.Customer;
 import io.eventuate.tram.events.publisher.DomainEventPublisher;
 import io.eventuate.tram.events.publisher.ResultWithEvents;
@@ -21,7 +21,7 @@ public class CustomerService {
   private EntityManager entityManager;
 
   @Transactional
-  public Customer createCustomer(String name, MoneyDTO creditLimit) {
+  public Customer createCustomer(String name, Money creditLimit) {
     ResultWithEvents<Customer> customerWithEvents = Customer.create(name, creditLimit);
     Customer customer = customerWithEvents.result;
     entityManager.persist(customer);

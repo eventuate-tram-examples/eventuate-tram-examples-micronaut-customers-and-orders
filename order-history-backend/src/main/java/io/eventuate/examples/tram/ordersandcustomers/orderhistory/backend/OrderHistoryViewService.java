@@ -1,6 +1,6 @@
 package io.eventuate.examples.tram.ordersandcustomers.orderhistory.backend;
 
-import io.eventuate.examples.tram.ordersandcustomers.commondomain.MoneyDTO;
+import io.eventuate.examples.tram.ordersandcustomers.commondomain.Money;
 import io.eventuate.examples.tram.ordersandcustomers.commondomain.OrderState;
 
 public class OrderHistoryViewService {
@@ -14,11 +14,11 @@ public class OrderHistoryViewService {
     this.orderViewRepository = orderViewRepository;
   }
 
-  public void createCustomer(Long customerId, String customerName, MoneyDTO creditLimit) {
+  public void createCustomer(Long customerId, String customerName, Money creditLimit) {
     customerViewRepository.addCustomer(customerId, customerName, creditLimit);
   }
 
-  public void addOrder(Long customerId, Long orderId, MoneyDTO orderTotal) {
+  public void addOrder(Long customerId, Long orderId, Money orderTotal) {
     customerViewRepository.addOrder(customerId, orderId, orderTotal);
     orderViewRepository.addOrder(orderId, orderTotal);
   }

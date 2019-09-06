@@ -1,6 +1,6 @@
 package io.eventuate.examples.tram.ordersandcustomers.orders.web;
 
-import io.eventuate.examples.tram.ordersandcustomers.commondomain.OrderDetailsDTO;
+import io.eventuate.examples.tram.ordersandcustomers.commondomain.OrderDetails;
 import io.eventuate.examples.tram.ordersandcustomers.orders.domain.Order;
 import io.eventuate.examples.tram.ordersandcustomers.orders.service.OrderService;
 import io.eventuate.examples.tram.ordersandcustomers.orders.webapi.CreateOrderRequest;
@@ -28,7 +28,7 @@ public class OrderController {
 
   @Post(value = "/orders")
   public CreateOrderResponse createOrder(CreateOrderRequest createOrderRequest) {
-    Order order = orderService.createOrder(new OrderDetailsDTO(createOrderRequest.getCustomerId(), createOrderRequest.getOrderTotal()));
+    Order order = orderService.createOrder(new OrderDetails(createOrderRequest.getCustomerId(), createOrderRequest.getOrderTotal()));
     return new CreateOrderResponse(order.getId());
   }
 

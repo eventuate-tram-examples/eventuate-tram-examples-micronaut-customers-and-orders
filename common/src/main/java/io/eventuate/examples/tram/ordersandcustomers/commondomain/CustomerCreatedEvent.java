@@ -4,12 +4,12 @@ import io.eventuate.tram.events.common.DomainEvent;
 
 public class CustomerCreatedEvent implements DomainEvent {
   private String name;
-  private MoneyDTO creditLimit;
+  private Money creditLimit;
 
   public CustomerCreatedEvent() {
   }
 
-  public CustomerCreatedEvent(String name, MoneyDTO creditLimit) {
+  public CustomerCreatedEvent(String name, Money creditLimit) {
     this.name = name;
     this.creditLimit = creditLimit;
   }
@@ -22,11 +22,11 @@ public class CustomerCreatedEvent implements DomainEvent {
     this.name = name;
   }
 
-  public MoneyDTO getCreditLimit() {
+  public Money getCreditLimit() {
     return creditLimit;
   }
 
-  public void setCreditLimit(MoneyDTO creditLimit) {
+  public void setCreditLimit(Money creditLimit) {
     this.creditLimit = creditLimit;
   }
 }

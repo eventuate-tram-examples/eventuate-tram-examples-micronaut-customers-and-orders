@@ -1,6 +1,6 @@
 package io.eventuate.examples.tram.ordersandcustomers.endtoendtests;
 
-import io.eventuate.examples.tram.ordersandcustomers.commondomain.MoneyDTO;
+import io.eventuate.examples.tram.ordersandcustomers.commondomain.Money;
 import io.eventuate.examples.tram.ordersandcustomers.commondomain.OrderState;
 import io.eventuate.examples.tram.ordersandcustomers.customers.webapi.CreateCustomerRequest;
 import io.eventuate.examples.tram.ordersandcustomers.customers.webapi.CreateCustomerResponse;
@@ -52,34 +52,34 @@ public class CustomersAndOrdersE2ETest{
 
   @Test
   public void shouldApprove() {
-    Long customerId = createCustomer("Fred", new MoneyDTO("15.00"));
-    Long orderId = createOrder(customerId, new MoneyDTO("12.34"));
+    Long customerId = createCustomer("Fred", new Money("15.00"));
+    Long orderId = createOrder(customerId, new Money("12.34"));
     assertOrderState(orderId, OrderState.APPROVED);
   }
 
   @Test
   public void shouldReject() {
-    Long customerId = createCustomer("Fred", new MoneyDTO("15.00"));
-    Long orderId = createOrder(customerId, new MoneyDTO("123.34"));
+    Long customerId = createCustomer("Fred", new Money("15.00"));
+    Long orderId = createOrder(customerId, new Money("123.34"));
     assertOrderState(orderId, OrderState.REJECTED);
   }
 
   @Test
   public void shouldRejectForNonExistentCustomerId() {
     Long customerId = System.nanoTime();
-    Long orderId = createOrder(customerId, new MoneyDTO("123.34"));
+    Long orderId = createOrder(customerId, new Money("123.34"));
     assertOrderState(orderId, OrderState.REJECTED);
   }
 
   @Test
   public void shouldRejectApproveAndKeepOrdersInHistory() {
-    Long customerId = createCustomer("John", new MoneyDTO("1000"));
+    Long customerId = createCustomer("John", new Money("1000"));
 
-    Long order1Id = createOrder(customerId, new MoneyDTO("100"));
+    Long order1Id = createOrder(customerId, new Money("100"));
 
     assertOrderState(order1Id, OrderState.APPROVED);
 
-    Long order2Id = createOrder(customerId, new MoneyDTO("1000"));
+    Long order2Id = createOrder(customerId, new Money("1000"));
 
     assertOrderState(order2Id, OrderState.REJECTED);
 
@@ -107,12 +107,12 @@ public class CustomersAndOrdersE2ETest{
   }
 
 
-  private Long createCustomer(String name, MoneyDTO credit) {
+  private Long createCustomer(String name, Money credit) {
     return restTemplate.postForObject(baseUrlCustomers("customers"),
             new CreateCustomerRequest(name, credit), CreateCustomerResponse.class).getCustomerId();
   }
 
-  private Long createOrder(Long customerId, MoneyDTO orderTotal) {
+  private Long createOrder(Long customerId, Money orderTotal) {
     return restTemplate.postForObject(baseUrlOrders("orders"),
             new CreateOrderRequest(customerId, orderTotal), CreateOrderResponse.class).getOrderId();
   }

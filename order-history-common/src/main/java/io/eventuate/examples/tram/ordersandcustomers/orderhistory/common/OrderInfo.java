@@ -1,19 +1,19 @@
 package io.eventuate.examples.tram.ordersandcustomers.orderhistory.common;
 
-import io.eventuate.examples.tram.ordersandcustomers.commondomain.MoneyDTO;
+import io.eventuate.examples.tram.ordersandcustomers.commondomain.Money;
 import io.eventuate.examples.tram.ordersandcustomers.commondomain.OrderState;
 
 public class OrderInfo {
 
   private Long orderId;
-  private MoneyDTO orderTotal;
+  private Money orderTotal;
   private OrderState state;
 
 
   public OrderInfo() {
   }
 
-  public OrderInfo(Long orderId, MoneyDTO orderTotal) {
+  public OrderInfo(Long orderId, Money orderTotal) {
     this.orderId = orderId;
     this.orderTotal = orderTotal;
     this.state = OrderState.PENDING;
@@ -27,7 +27,7 @@ public class OrderInfo {
     state = OrderState.REJECTED;
   }
 
-  public MoneyDTO getOrderTotal() {
+  public Money getOrderTotal() {
     return orderTotal;
   }
 

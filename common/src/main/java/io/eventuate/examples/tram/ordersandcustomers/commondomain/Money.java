@@ -4,20 +4,25 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Embeddable;
 import java.math.BigDecimal;
 
-public class MoneyDTO {
+@Embeddable
+@Access(AccessType.FIELD)
+public class Money {
 
-  public static final MoneyDTO ZERO = new MoneyDTO(0);
+  public static final Money ZERO = new Money(0);
   private BigDecimal amount;
 
-  public MoneyDTO() {
+  public Money() {
   }
 
-  public MoneyDTO(int i) {
+  public Money(int i) {
     this.amount = new BigDecimal(i);
   }
-  public MoneyDTO(String s) {
+  public Money(String s) {
     this.amount = new BigDecimal(s);
   }
 
@@ -36,7 +41,7 @@ public class MoneyDTO {
     return HashCodeBuilder.reflectionHashCode(this);
   }
 
-  public MoneyDTO(BigDecimal amount) {
+  public Money(BigDecimal amount) {
     this.amount = amount;
   }
 
@@ -48,14 +53,14 @@ public class MoneyDTO {
     this.amount = amount;
   }
 
-  public boolean isGreaterThanOrEqual(MoneyDTO other) {
+  public boolean isGreaterThanOrEqual(Money other) {
     return amount.compareTo(other.amount) >= 0;
   }
 
-  public MoneyDTO add(MoneyDTO other) {
-    return new MoneyDTO(amount.add(other.amount));
+  public Money add(Money other) {
+    return new Money(amount.add(other.amount));
   }
-  public MoneyDTO subtract(MoneyDTO other) {
-    return new MoneyDTO(amount.subtract(other.amount));
+  public Money subtract(Money other) {
+    return new Money(amount.subtract(other.amount));
   }
 }

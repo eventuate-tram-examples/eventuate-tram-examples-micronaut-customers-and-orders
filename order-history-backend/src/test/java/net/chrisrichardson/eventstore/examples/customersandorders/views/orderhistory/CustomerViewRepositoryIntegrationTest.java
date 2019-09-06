@@ -1,6 +1,6 @@
 package net.chrisrichardson.eventstore.examples.customersandorders.views.orderhistory;
 
-import io.eventuate.examples.tram.ordersandcustomers.commondomain.MoneyDTO;
+import io.eventuate.examples.tram.ordersandcustomers.commondomain.Money;
 import io.eventuate.examples.tram.ordersandcustomers.orderhistory.backend.CustomerViewRepository;
 import io.eventuate.examples.tram.ordersandcustomers.orderhistory.common.CustomerView;
 import io.micronaut.test.annotation.MicronautTest;
@@ -20,7 +20,7 @@ public class CustomerViewRepositoryIntegrationTest {
   public void shouldCreateAndFindCustomer() {
 
     Long customerId = System.nanoTime();
-    MoneyDTO creditLimit = new MoneyDTO(2000);
+    Money creditLimit = new Money(2000);
     String customerName = "Fred";
 
     customerViewRepository.addCustomer(customerId, customerName, creditLimit);

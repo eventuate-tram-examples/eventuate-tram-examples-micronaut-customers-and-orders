@@ -1,6 +1,6 @@
 package io.eventuate.examples.tram.ordersandcustomers.orderhistory.common;
 
-import io.eventuate.examples.tram.ordersandcustomers.commondomain.MoneyDTO;
+import io.eventuate.examples.tram.ordersandcustomers.commondomain.Money;
 import io.eventuate.examples.tram.ordersandcustomers.commondomain.OrderState;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -12,19 +12,19 @@ public class OrderView {
   private Long id;
 
   private OrderState state;
-  private MoneyDTO orderTotal;
+  private Money orderTotal;
 
 
   public OrderView() {
   }
 
-  public OrderView(Long id, MoneyDTO orderTotal) {
+  public OrderView(Long id, Money orderTotal) {
     this.id = id;
     this.orderTotal = orderTotal;
     this.state = OrderState.PENDING;
   }
 
-  public MoneyDTO getOrderTotal() {
+  public Money getOrderTotal() {
     return orderTotal;
   }
 

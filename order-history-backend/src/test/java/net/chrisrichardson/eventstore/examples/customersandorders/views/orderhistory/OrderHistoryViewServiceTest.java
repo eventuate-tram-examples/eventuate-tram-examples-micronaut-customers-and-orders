@@ -1,6 +1,6 @@
 package net.chrisrichardson.eventstore.examples.customersandorders.views.orderhistory;
 
-import io.eventuate.examples.tram.ordersandcustomers.commondomain.MoneyDTO;
+import io.eventuate.examples.tram.ordersandcustomers.commondomain.Money;
 import io.eventuate.examples.tram.ordersandcustomers.commondomain.OrderState;
 import io.eventuate.examples.tram.ordersandcustomers.orderhistory.backend.CustomerViewRepository;
 import io.eventuate.examples.tram.ordersandcustomers.orderhistory.backend.OrderHistoryViewService;
@@ -30,13 +30,13 @@ public class OrderHistoryViewServiceTest {
   @Test
   public void shouldCreateCustomerAndOrdersEtc() {
     Long customerId = System.nanoTime();
-    MoneyDTO creditLimit = new MoneyDTO(2000);
+    Money creditLimit = new Money(2000);
     String customerName = "Fred";
 
     Long orderId1 = System.nanoTime();
-    MoneyDTO orderTotal1 = new MoneyDTO(1234);
+    Money orderTotal1 = new Money(1234);
     Long orderId2 = System.nanoTime();
-    MoneyDTO orderTotal2 = new MoneyDTO(3000);
+    Money orderTotal2 = new Money(3000);
 
     orderHistoryViewService.createCustomer(customerId, customerName, creditLimit);
     orderHistoryViewService.addOrder(customerId, orderId1, orderTotal1);

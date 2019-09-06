@@ -1,15 +1,16 @@
 package io.eventuate.examples.tram.ordersandcustomers.customers.webapi;
 
-import io.eventuate.examples.tram.ordersandcustomers.commondomain.MoneyDTO;
+
+import io.eventuate.examples.tram.ordersandcustomers.commondomain.Money;
 
 public class CreateCustomerRequest {
   private String name;
-  private MoneyDTO creditLimit;
+  private Money creditLimit;
 
   public CreateCustomerRequest() {
   }
 
-  public CreateCustomerRequest(String name, MoneyDTO creditLimit) {
+  public CreateCustomerRequest(String name, Money creditLimit) {
 
     this.name = name;
     this.creditLimit = creditLimit;
@@ -20,7 +21,7 @@ public class CreateCustomerRequest {
     return name;
   }
 
-  public MoneyDTO getCreditLimit() {
+  public Money getCreditLimit() {
     return creditLimit;
   }
 }
