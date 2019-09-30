@@ -1,0 +1,10 @@
+endpoints:
+  health:
+    enabled: true
+    sensitive: false
+    details-visible: ANONYMOUS
+
+mongodb:
+  uri: ${SPRING_DATA_MONGODB_URI}
+
+

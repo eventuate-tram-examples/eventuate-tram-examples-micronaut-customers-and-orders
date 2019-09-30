@@ -1,0 +1,6 @@
+dependencies {
+    compile "io.eventuate.tram.core:eventuate-tram-events:$eventuateTramVersion"
+    compile 'javax.persistence:javax.persistence-api:2.2'
+    compile "commons-lang:commons-lang:2.6"
+}
+

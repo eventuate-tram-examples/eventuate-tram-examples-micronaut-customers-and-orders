@@ -1,0 +1,21 @@
+datasources:
+  default:
+    url: ${DB_URL}
+    driverClassName: ${DB_DRIVERCLASSNAME}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+jpa:
+  default:
+    packages-to-scan:
+      - 'io.eventuate.examples.tram.ordersandcustomers.orders.domain'
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: update
+        show_sql: true
+endpoints:
+  health:
+    enabled: true
+    sensitive: false
+    details-visible: ANONYMOUS
+
