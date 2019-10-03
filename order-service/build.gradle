@@ -29,6 +29,10 @@ dependencies {
     compile "io.micronaut:micronaut-http-server-netty"
     compile 'io.micronaut:micronaut-management'
     runtime "ch.qos.logback:logback-classic:1.2.3"
+
+    annotationProcessor "io.micronaut.configuration:micronaut-openapi"
+    compile "io.swagger.core.v3:swagger-annotations"
+    compile "io.eventuate.util:eventuate-util-micronaut-swagger-ui:$eventuateUtilVersion"
 }
 
 mainClassName = "io.eventuate.examples.tram.ordersandcustomers.orders.OrderServiceMain"

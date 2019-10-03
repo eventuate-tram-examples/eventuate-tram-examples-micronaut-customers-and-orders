@@ -7,4 +7,12 @@ endpoints:
 mongodb:
   uri: ${SPRING_DATA_MONGODB_URI}
 
-
+micronaut:
+  router:
+    static-resources:
+      swagger-ui:
+        paths: classpath:swagger-ui
+        mapping: /swagger-ui/**
+      swagger:
+        paths: classpath:META-INF/swagger
+        mapping: /swagger/**

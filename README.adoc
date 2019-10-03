@@ -137,9 +137,9 @@ See this http://eventuate.io/docs/usingdocker.html[guide to setting `DOCKER_HOST
 
 Once the application has started, you can use the application via the Swagger UI:
 
-* `Customer Service` - `http://${DOCKER_HOST_IP}:8082/swagger-ui.html`
-* `Order Service` - `http://${DOCKER_HOST_IP}:8081/swagger-ui.html`
-* `Order History Service` - `http://${DOCKER_HOST_IP}:8083/swagger-ui.html`
+* `Customer Service` - `http://${DOCKER_HOST_IP}:8082/swagger-ui/index.html`
+* `Order Service` - `http://${DOCKER_HOST_IP}:8081/swagger-ui/index.html`
+* `Order History Service` - `http://${DOCKER_HOST_IP}:8083/swagger-ui/index.html`
 
 You can also use `curl` to interact with the services.
 First, let's create a customer:
