@@ -1,4 +1,4 @@
-# Eventuate Tram Customers and Orders
+# Eventuate Tram Customers and Orders - Micronaut version
 
 This application demonstrates two key patterns:
 
@@ -11,7 +11,7 @@ The application consists of three services:
 * `Customer Service` - manages customers
 * `Order History Service` - maintains the order history
 
-All services are implemented using Spring Boot, JPA and the https://github.com/eventuate-tram/eventuate-tram-core[Eventuate Tram framework], which provides transactional publish/subscribe.
+All services are implemented using https://micronaut.io[Micronaut], JPA and the https://github.com/eventuate-tram/eventuate-tram-core[Eventuate Tram framework], which provides https://microservices.io/patterns/data/transactional-outbox.html[transactional publish/subscribe].
 
 The `Order Service` uses a choreography-based saga to enforce the customer's credit limit when creating orders.
 
@@ -22,17 +22,18 @@ The `Order History Service` implements a CQRS view and subscribes to domain even
 http://microservices.io/patterns/data/saga.html[Sagas] are a mechanism for maintaining data consistency in a http://microservices.io/patterns/microservices.html[microservice architecture].
 A saga is a sequence of transactions, each of which is local to a service.
 
+To learn more about why you need sagas if you are using microservices:
+
+* Read the http://microservices.io/patterns/data/saga.html[Saga pattern]
+* Look at https://chrisrichardson.net/post/antipatterns/2019/07/09/developing-sagas-part-1.html[Articles and presentation on sagas]
+* Read about sagas in my https://microservices.io/book[Microservices patterns book]
+
 There are two main ways to coordinate sagas: orchestration and choreography.
+To learn more about orchestration, please look at the https://github.com/eventuate-tram-examples/eventuate-tram-sagas-micronaut-examples-customers-and-orders[Orchestration-based saga example]
 This example uses choreography-based sagas, which use domain events for coordination.
 Each step of a saga updates the local database and publishes a domain event.
 The domain event is processed by an event handler, which performs the next local transaction.
 
-To learn more about why you need sagas if you are using microservices:
-
-* Look at the https://github.com/eventuate-tram/eventuate-tram-sagas-examples-customers-and-orders[Orchestration-based saga example]
-* Read the http://microservices.io/patterns/data/saga.html[Saga pattern]
-* Look at https://microservices.io/microservices/general/2019/04/28/asynchronous-microservices.html[MicroCPH 2019 presentation]
-* Read about sagas in my https://microservices.io/book[Microservices patterns book]
 
 === The Create Order saga
 
@@ -223,5 +224,5 @@ Content-Type: application/json;charset=UTF-8
 Don't hesitate to create an issue or see
 
 * https://groups.google.com/d/forum/eventuate-users[Mailing list]
-* https://join.slack.com/t/eventuate-users/shared_invite/enQtNTM4NjE0OTMzMDQ3LTc3ZjYzYjYxOGViNTdjMThkZmVmNWQzZWMwZmQyYzhjNjQ4OTE4YzJiYTE2NDdlOTljMDFlMDlkYTI2OWU1NTk[Slack Workspace]
+* https://join.slack.com/t/eventuate-users/shared_invite/enQtNTM4NjE0OTMzMDQ3LTc3ZjYzYjYxOGViNTdjMThkZmVmNWQzZWMwZmQyYzhjNjQ4OTE4YzJiYTE2NDdlOTljMDFlMDlkYTI2OWU1NTk[Slack]
 * http://eventuate.io/contact.html[Contact us].
