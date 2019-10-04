@@ -32,7 +32,7 @@ dependencies {
 
     annotationProcessor "io.micronaut.configuration:micronaut-openapi"
     compile "io.swagger.core.v3:swagger-annotations"
-    compile "io.eventuate.util:eventuate-util-micronaut-swagger-ui:$eventuateUtilVersion"
+    compile "io.eventuate.util:eventuate-util-swagger-ui:$eventuateUtilVersion"
 }
 
 mainClassName = "io.eventuate.examples.tram.ordersandcustomers.customers.CustomerServiceMain"
