@@ -18,4 +18,14 @@ endpoints:
     enabled: true
     sensitive: false
     details-visible: ANONYMOUS
+micronaut:
+  router:
+    static-resources:
+      swagger-ui:
+        paths: classpath:META-INF/swagger-ui
+        mapping: /swagger-ui/**
+      swagger:
+        paths: classpath:META-INF/swagger
+        mapping: /swagger/**
+
 
