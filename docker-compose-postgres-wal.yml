@@ -71,7 +71,7 @@ services:
       - ZOOKEEPER_CONNECTION_TIMEOUT_MS=60000
 
   postgres:
-    image: eventuateio/eventuate-postgres:$EVENTUATE_COMMON_VERSION
+    image: test-eventuate-postgres
     ports:
       - 5432:5432
     environment:

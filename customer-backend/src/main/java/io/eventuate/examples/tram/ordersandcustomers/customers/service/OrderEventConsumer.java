@@ -6,6 +6,7 @@ import io.eventuate.examples.tram.ordersandcustomers.commondomain.CustomerValida
 import io.eventuate.examples.tram.ordersandcustomers.commondomain.OrderCreatedEvent;
 import io.eventuate.examples.tram.ordersandcustomers.customers.domain.Customer;
 import io.eventuate.examples.tram.ordersandcustomers.customers.domain.CustomerCreditLimitExceededException;
+import io.eventuate.examples.tram.ordersandcustomers.customers.repository.CustomerRepository;
 import io.eventuate.tram.events.publisher.DomainEventPublisher;
 import io.eventuate.tram.events.subscriber.DomainEventEnvelope;
 import io.eventuate.tram.events.subscriber.DomainEventHandlers;
@@ -13,22 +14,20 @@ import io.eventuate.tram.events.subscriber.DomainEventHandlersBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.Collections;
+import java.util.Optional;
 
 
-@Singleton
 public class OrderEventConsumer {
   private Logger logger = LoggerFactory.getLogger(getClass());
 
-  @Inject
+  private CustomerRepository customerRepository;
   private DomainEventPublisher domainEventPublisher;
 
-  @PersistenceContext
-  private EntityManager entityManager;
+  public OrderEventConsumer(CustomerRepository customerRepository, DomainEventPublisher domainEventPublisher) {
+    this.customerRepository = customerRepository;
+    this.domainEventPublisher = domainEventPublisher;
+  }
 
   public DomainEventHandlers domainEventHandlers() {
     return DomainEventHandlersBuilder
@@ -45,15 +44,17 @@ public class OrderEventConsumer {
 
     Long customerId = orderCreatedEvent.getOrderDetails().getCustomerId();
 
-    Customer customer = entityManager.find(Customer.class, customerId);
+    Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
 
-    if (customer == null) {
+    if (!optionalCustomer.isPresent()) {
       logger.info("Non-existent customer: {}", customerId);
       domainEventPublisher.publish(Customer.class,
               customerId,
               Collections.singletonList(new CustomerValidationFailedEvent(orderId)));
       return;
     }
+
+    Customer customer = optionalCustomer.get();
 
     try {
       customer.reserveCredit(orderId, orderCreatedEvent.getOrderDetails().getOrderTotal());

@@ -7,29 +7,30 @@ repositories {
     maven { url "https://jcenter.bintray.com" }
 }
 
-dependencyManagement {
-    imports {
-        mavenBom 'io.micronaut:micronaut-bom:1.1.0'
-    }
-}
-
 dependencies {
+    implementation platform("io.micronaut:micronaut-bom:$micronautVersion")
+    annotationProcessor platform("io.micronaut:micronaut-bom:$micronautVersion")
+    testAnnotationProcessor platform("io.micronaut:micronaut-bom:$micronautVersion")
+
     compile project(":common")
 
     compile "io.eventuate.tram.core:eventuate-tram-producer-jdbc-micronaut:$eventuateTramVersion"
     compile "io.eventuate.tram.core:eventuate-tram-consumer-jdbc-micronaut:$eventuateTramVersion"
     compile "io.eventuate.tram.core:eventuate-tram-messaging-micronaut:$eventuateTramVersion"
-    compile "io.eventuate.tram.core:eventuate-tram-consumer-kafka-micronaut:$eventuateTramVersion"
     compile "io.eventuate.tram.core:eventuate-tram-events-micronaut:$eventuateTramVersion"
-    compile "io.micronaut:micronaut-spring"
+    //    compile "io.eventuate.tram.core:eventuate-tram-consumer-kafka-micronaut:$eventuateTramVersion"
+    compile "io.eventuate.tram.core:eventuate-tram-messaging-micronaut:$eventuateTramVersion"
+    compile "io.eventuate.tram.core:eventuate-tram-consumer-common-micronaut:$eventuateTramVersion"
 
-    runtime 'mysql:mysql-connector-java:5.1.36'
-    runtime ('org.postgresql:postgresql:9.4-1200-jdbc41') {
-        exclude group: "org.slf4j", module: "slf4j-simple"
+    compile "io.micronaut:micronaut-spring"
+    annotationProcessor "io.micronaut.data:micronaut-data-processor:$micronautDataVersion"
+    implementation "io.micronaut.data:micronaut-data-jdbc:$micronautDataVersion"
+    implementation "io.micronaut.data:micronaut-data-hibernate-jpa:$micronautDataVersion", {
+        exclude group:'io.micronaut.configuration', module:'micronaut-hibernate-jpa-spring'
     }
-    compile "io.micronaut.configuration:micronaut-hibernate-jpa"
-    annotationProcessor "javax.persistence:javax.persistence-api:2.2"
-    compile 'io.micronaut.configuration:micronaut-jdbc-hikari'
+    compile "io.micronaut.data:micronaut-data-spring:${micronautDataVersion}"
+    runtime "io.micronaut.configuration:micronaut-jdbc-tomcat"
+//    implementation "jakarta.persistence:jakarta.persistence-api:2.2.2"
 
     annotationProcessor "io.micronaut:micronaut-inject-java"
     annotationProcessor "io.micronaut:micronaut-validation"

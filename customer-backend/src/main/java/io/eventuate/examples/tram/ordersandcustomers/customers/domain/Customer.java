@@ -12,12 +12,12 @@ import static java.util.Collections.singletonList;
 
 @Entity
 @Table(name="Customer")
-@Access(AccessType.FIELD)
 public class Customer {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue(strategy = GenerationType.TABLE)
   private Long id;
+
   private String name;
 
   @Embedded
@@ -50,12 +50,24 @@ public class Customer {
     return id;
   }
 
+  public void setId(Long id) {
+    this.id = id;
+  }
+
   public String getName() {
     return name;
   }
 
+  public void setName(String name) {
+    this.name = name;
+  }
+
   public Money getCreditLimit() {
     return creditLimit;
+  }
+
+  public void setCreditLimit(Money creditLimit) {
+    this.creditLimit = creditLimit;
   }
 
   public void reserveCredit(Long orderId, Money orderTotal) {

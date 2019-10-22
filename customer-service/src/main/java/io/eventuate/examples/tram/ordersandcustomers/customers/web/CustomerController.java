@@ -7,13 +7,14 @@ import io.eventuate.examples.tram.ordersandcustomers.customers.webapi.CreateCust
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Post;
 
-import javax.inject.Inject;
-
 @Controller
 public class CustomerController {
 
-  @Inject
   private CustomerService customerService;
+
+  public CustomerController(CustomerService customerService) {
+    this.customerService = customerService;
+  }
 
   @Post(value = "/customers")
   public CreateCustomerResponse createCustomer(CreateCustomerRequest createCustomerRequest) {
