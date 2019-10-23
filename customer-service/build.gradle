@@ -37,7 +37,9 @@ dependencies {
     annotationProcessor "io.micronaut.configuration:micronaut-openapi"
     compile "io.swagger.core.v3:swagger-annotations"
     compile "io.eventuate.util:eventuate-util-swagger-ui:$eventuateUtilVersion"
-//    configurations.compile.exclude(group: 'com.microsoft.sqlserver', module: 'mssql-jdbc')
+
+    configurations.compile.exclude(group: 'com.microsoft.sqlserver', module: 'mssql-jdbc')
+    configurations.compile.exclude(group: 'mysql', module: 'mysql-connector-java')
 }
 
 mainClassName = "io.eventuate.examples.tram.ordersandcustomers.customers.CustomerServiceMain"
