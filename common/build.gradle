@@ -12,10 +12,8 @@ dependencies {
     annotationProcessor platform("io.micronaut:micronaut-bom:$micronautVersion")
 
     compile "io.eventuate.tram.core:eventuate-tram-events:$eventuateTramVersion"
-    compile 'javax.persistence:javax.persistence-api:2.2'
     compile "commons-lang:commons-lang:2.6"
 
-    annotationProcessor "io.micronaut.data:micronaut-data-processor:$micronautDataVersion" // necessary
     annotationProcessor "io.micronaut:micronaut-inject-java"
     annotationProcessor "io.micronaut:micronaut-validation"
     compile "io.micronaut:micronaut-inject"

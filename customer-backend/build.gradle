@@ -14,27 +14,21 @@ dependencies {
 
     compile project(":common")
 
+    compile "io.eventuate.common:eventuate-common-jdbc-micronaut-data:$eventuateCommonVersion"
     compile "io.eventuate.tram.core:eventuate-tram-producer-jdbc-micronaut:$eventuateTramVersion"
-    compile "io.eventuate.tram.core:eventuate-tram-consumer-jdbc-micronaut:$eventuateTramVersion"
+    compile "io.eventuate.tram.core:eventuate-tram-consumer-common-micronaut:$eventuateTramVersion"
     compile "io.eventuate.tram.core:eventuate-tram-messaging-micronaut:$eventuateTramVersion"
     compile "io.eventuate.tram.core:eventuate-tram-events-micronaut:$eventuateTramVersion"
-    //    compile "io.eventuate.tram.core:eventuate-tram-consumer-kafka-micronaut:$eventuateTramVersion"
-    compile "io.eventuate.tram.core:eventuate-tram-messaging-micronaut:$eventuateTramVersion"
-    compile "io.eventuate.tram.core:eventuate-tram-consumer-common-micronaut:$eventuateTramVersion"
+    compile "io.eventuate.messaging.http:eventuate-tram-consumer-http-micronaut:$eventuateTramMessagingHttpVersion"
 
-    compile "io.micronaut:micronaut-spring"
-    annotationProcessor "io.micronaut.data:micronaut-data-processor:$micronautDataVersion"
-    implementation "io.micronaut.data:micronaut-data-jdbc:$micronautDataVersion"
-    implementation "io.micronaut.data:micronaut-data-hibernate-jpa:$micronautDataVersion", {
-        exclude group:'io.micronaut.configuration', module:'micronaut-hibernate-jpa-spring'
-    }
-    compile "io.micronaut.data:micronaut-data-spring:${micronautDataVersion}"
-    runtime "io.micronaut.configuration:micronaut-jdbc-tomcat"
-//    implementation "jakarta.persistence:jakarta.persistence-api:2.2.2"
+    compile "jakarta.persistence:jakarta.persistence-api:2.2.2"
+    compile "io.micronaut.data:micronaut-data-jdbc:$micronautDataVersion"
+    compile 'io.micronaut.configuration:micronaut-jdbc-tomcat'
 
     annotationProcessor "io.micronaut:micronaut-inject-java"
     annotationProcessor "io.micronaut:micronaut-validation"
     annotationProcessor "io.micronaut.configuration:micronaut-openapi"
+    annotationProcessor "io.micronaut.data:micronaut-data-processor:$micronautDataVersion"
     compile "io.micronaut:micronaut-inject"
     compile "io.micronaut:micronaut-validation"
     compile "io.micronaut:micronaut-runtime"

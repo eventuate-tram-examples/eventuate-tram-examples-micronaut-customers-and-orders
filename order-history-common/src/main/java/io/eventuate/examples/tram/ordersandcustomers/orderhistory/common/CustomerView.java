@@ -1,22 +1,28 @@
 package io.eventuate.examples.tram.ordersandcustomers.orderhistory.common;
 
-import io.eventuate.examples.tram.ordersandcustomers.commondomain.Money;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import io.micronaut.core.annotation.Introspected;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
-@Document
+@Introspected
 public class CustomerView {
 
-  @Id
   private Long id;
-
-
   private Map<Long, OrderInfo> orders = new HashMap<>();
   private String name;
-  private Money creditLimit;
+  private BigDecimal creditLimit;
+
+  public CustomerView() {
+  }
+
+  public CustomerView(Long id, Map<Long, OrderInfo> orders, String name, BigDecimal creditLimit) {
+    this.id = id;
+    this.orders = orders;
+    this.name = name;
+    this.creditLimit = creditLimit;
+  }
 
   public void setId(Long id) {
     this.id = id;
@@ -38,11 +44,15 @@ public class CustomerView {
     return name;
   }
 
-  public void setCreditLimit(Money creditLimit) {
+  public void setCreditLimit(BigDecimal creditLimit) {
     this.creditLimit = creditLimit;
   }
 
-  public Money getCreditLimit() {
+  public BigDecimal getCreditLimit() {
     return creditLimit;
+  }
+
+  public void setOrders(Map<Long, OrderInfo> orders) {
+    this.orders = orders;
   }
 }

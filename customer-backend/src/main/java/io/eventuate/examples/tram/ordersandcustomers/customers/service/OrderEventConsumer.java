@@ -4,8 +4,10 @@ import io.eventuate.examples.tram.ordersandcustomers.commondomain.CustomerCredit
 import io.eventuate.examples.tram.ordersandcustomers.commondomain.CustomerCreditReservedEvent;
 import io.eventuate.examples.tram.ordersandcustomers.commondomain.CustomerValidationFailedEvent;
 import io.eventuate.examples.tram.ordersandcustomers.commondomain.OrderCreatedEvent;
+import io.eventuate.examples.tram.ordersandcustomers.customers.domain.CreditReservation;
 import io.eventuate.examples.tram.ordersandcustomers.customers.domain.Customer;
 import io.eventuate.examples.tram.ordersandcustomers.customers.domain.CustomerCreditLimitExceededException;
+import io.eventuate.examples.tram.ordersandcustomers.customers.repository.CreditReservationRepository;
 import io.eventuate.examples.tram.ordersandcustomers.customers.repository.CustomerRepository;
 import io.eventuate.tram.events.publisher.DomainEventPublisher;
 import io.eventuate.tram.events.subscriber.DomainEventEnvelope;
@@ -14,18 +16,22 @@ import io.eventuate.tram.events.subscriber.DomainEventHandlersBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Singleton;
 import java.util.Collections;
-import java.util.Optional;
 
-
+@Singleton
 public class OrderEventConsumer {
   private Logger logger = LoggerFactory.getLogger(getClass());
 
   private CustomerRepository customerRepository;
+  private CreditReservationRepository creditReservationRepository;
   private DomainEventPublisher domainEventPublisher;
 
-  public OrderEventConsumer(CustomerRepository customerRepository, DomainEventPublisher domainEventPublisher) {
+  public OrderEventConsumer(CustomerRepository customerRepository,
+                            CreditReservationRepository creditReservationRepository,
+                            DomainEventPublisher domainEventPublisher) {
     this.customerRepository = customerRepository;
+    this.creditReservationRepository = creditReservationRepository;
     this.domainEventPublisher = domainEventPublisher;
   }
 
@@ -44,9 +50,9 @@ public class OrderEventConsumer {
 
     Long customerId = orderCreatedEvent.getOrderDetails().getCustomerId();
 
-    Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
+    Customer customer = customerRepository.findById(customerId).orElse(null);
 
-    if (!optionalCustomer.isPresent()) {
+    if (customer == null) {
       logger.info("Non-existent customer: {}", customerId);
       domainEventPublisher.publish(Customer.class,
               customerId,
@@ -54,10 +60,10 @@ public class OrderEventConsumer {
       return;
     }
 
-    Customer customer = optionalCustomer.get();
-
     try {
-      customer.reserveCredit(orderId, orderCreatedEvent.getOrderDetails().getOrderTotal());
+      customer.setCreditReservations(creditReservationRepository.findAllByCustomerId(customerId));
+
+      CreditReservation creditReservation = customer.reserveCredit(orderId, orderCreatedEvent.getOrderDetails().getOrderTotal());
 
       CustomerCreditReservedEvent customerCreditReservedEvent =
               new CustomerCreditReservedEvent(orderId);
@@ -66,6 +72,7 @@ public class OrderEventConsumer {
               customer.getId(),
               Collections.singletonList(customerCreditReservedEvent));
 
+      creditReservationRepository.save(creditReservation);
     } catch (CustomerCreditLimitExceededException e) {
 
       CustomerCreditReservationFailedEvent customerCreditReservationFailedEvent =

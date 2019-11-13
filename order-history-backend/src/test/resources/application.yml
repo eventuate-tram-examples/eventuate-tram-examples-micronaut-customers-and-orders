@@ -1,0 +1,8 @@
+eventuate:
+  http:
+    proxy:
+      base:
+        url: http://${DOCKER_HOST_IP}:8098/subscriptions
+    consumer:
+      base:
+        url: http://${DOCKER_HOST_IP}:8083/messages

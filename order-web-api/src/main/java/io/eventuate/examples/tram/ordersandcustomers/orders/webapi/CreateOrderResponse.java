@@ -1,6 +1,9 @@
 package io.eventuate.examples.tram.ordersandcustomers.orders.webapi;
 
 
+import io.micronaut.core.annotation.Introspected;
+
+@Introspected
 public class CreateOrderResponse {
   private Long orderId;
 
@@ -13,5 +16,9 @@ public class CreateOrderResponse {
 
   public Long getOrderId() {
     return orderId;
+  }
+
+  public void setOrderId(Long orderId) {
+    this.orderId = orderId;
   }
 }

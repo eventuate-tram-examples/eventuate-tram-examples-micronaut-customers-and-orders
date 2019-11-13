@@ -1,15 +1,19 @@
 package io.eventuate.examples.tram.ordersandcustomers.commondomain;
 
 import io.eventuate.tram.events.common.DomainEvent;
+import io.micronaut.core.annotation.Introspected;
 
+import java.math.BigDecimal;
+
+@Introspected
 public class CustomerCreatedEvent implements DomainEvent {
   private String name;
-  private Money creditLimit;
+  private BigDecimal creditLimit;
 
   public CustomerCreatedEvent() {
   }
 
-  public CustomerCreatedEvent(String name, Money creditLimit) {
+  public CustomerCreatedEvent(String name, BigDecimal creditLimit) {
     this.name = name;
     this.creditLimit = creditLimit;
   }
@@ -22,11 +26,11 @@ public class CustomerCreatedEvent implements DomainEvent {
     this.name = name;
   }
 
-  public Money getCreditLimit() {
+  public BigDecimal getCreditLimit() {
     return creditLimit;
   }
 
-  public void setCreditLimit(Money creditLimit) {
+  public void setCreditLimit(BigDecimal creditLimit) {
     this.creditLimit = creditLimit;
   }
 }

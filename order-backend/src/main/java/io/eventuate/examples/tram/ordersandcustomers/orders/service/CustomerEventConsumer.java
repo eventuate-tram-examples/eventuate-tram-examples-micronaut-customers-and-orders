@@ -7,15 +7,17 @@ import io.eventuate.tram.events.subscriber.DomainEventEnvelope;
 import io.eventuate.tram.events.subscriber.DomainEventHandlers;
 import io.eventuate.tram.events.subscriber.DomainEventHandlersBuilder;
 
-import javax.inject.Inject;
 import javax.inject.Singleton;
 
 
 @Singleton
 public class CustomerEventConsumer {
 
-  @Inject
   private OrderService orderService;
+
+  public CustomerEventConsumer(OrderService orderService) {
+    this.orderService = orderService;
+  }
 
   public DomainEventHandlers domainEventHandlers() {
     return DomainEventHandlersBuilder

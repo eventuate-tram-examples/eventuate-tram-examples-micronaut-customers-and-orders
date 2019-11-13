@@ -1,6 +1,5 @@
 package io.eventuate.examples.tram.ordersandcustomers.endtoendtests;
 
-import io.eventuate.examples.tram.ordersandcustomers.commondomain.Money;
 import io.eventuate.examples.tram.ordersandcustomers.commondomain.OrderState;
 import io.eventuate.examples.tram.ordersandcustomers.customers.webapi.CreateCustomerRequest;
 import io.eventuate.examples.tram.ordersandcustomers.customers.webapi.CreateCustomerResponse;
@@ -10,29 +9,26 @@ import io.eventuate.examples.tram.ordersandcustomers.orders.webapi.CreateOrderRe
 import io.eventuate.examples.tram.ordersandcustomers.orders.webapi.CreateOrderResponse;
 import io.eventuate.examples.tram.ordersandcustomers.orders.webapi.GetOrderResponse;
 import io.eventuate.util.test.async.Eventually;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.context.SpringBootTest;
+import io.micronaut.context.annotation.Value;
+import io.micronaut.test.annotation.MicronautTest;
+import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
 
+import javax.inject.Inject;
+import java.math.BigDecimal;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = CustomersAndOrdersE2ETestConfiguration.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
+
+@MicronautTest
 public class CustomersAndOrdersE2ETest{
 
-  @Value("#{systemEnvironment['DOCKER_HOST_IP']}")
+  @Value("${docker.host.ip}")
   private String hostName;
 
   private String baseUrlOrders(String path) {
@@ -47,39 +43,39 @@ public class CustomersAndOrdersE2ETest{
     return "http://"+hostName+":8083/" + path;
   }
 
-  @Autowired
-  RestTemplate restTemplate;
+  @Inject
+  private RestTemplate restTemplate;
 
   @Test
   public void shouldApprove() {
-    Long customerId = createCustomer("Fred", new Money("15.00"));
-    Long orderId = createOrder(customerId, new Money("12.34"));
+    Long customerId = createCustomer("Fred", new BigDecimal("15.00"));
+    Long orderId = createOrder(customerId, new BigDecimal("12.34"));
     assertOrderState(orderId, OrderState.APPROVED);
   }
 
   @Test
   public void shouldReject() {
-    Long customerId = createCustomer("Fred", new Money("15.00"));
-    Long orderId = createOrder(customerId, new Money("123.34"));
+    Long customerId = createCustomer("Fred", new BigDecimal("15.00"));
+    Long orderId = createOrder(customerId, new BigDecimal("123.34"));
     assertOrderState(orderId, OrderState.REJECTED);
   }
 
   @Test
   public void shouldRejectForNonExistentCustomerId() {
     Long customerId = System.nanoTime();
-    Long orderId = createOrder(customerId, new Money("123.34"));
+    Long orderId = createOrder(customerId, new BigDecimal("123.34"));
     assertOrderState(orderId, OrderState.REJECTED);
   }
 
   @Test
   public void shouldRejectApproveAndKeepOrdersInHistory() {
-    Long customerId = createCustomer("John", new Money("1000"));
+    Long customerId = createCustomer("John", new BigDecimal("1000"));
 
-    Long order1Id = createOrder(customerId, new Money("100"));
+    Long order1Id = createOrder(customerId, new BigDecimal("100"));
 
     assertOrderState(order1Id, OrderState.APPROVED);
 
-    Long order2Id = createOrder(customerId, new Money("1000"));
+    Long order2Id = createOrder(customerId, new BigDecimal("1000"));
 
     assertOrderState(order2Id, OrderState.REJECTED);
 
@@ -90,8 +86,8 @@ public class CustomersAndOrdersE2ETest{
 
       assertEquals(2, orders.size());
 
-      assertThat(orders.get(order1Id).getState(), is(OrderState.APPROVED));
-      assertThat(orders.get(order2Id).getState(), is(OrderState.REJECTED));
+      assertEquals(orders.get(order1Id).getState(), OrderState.APPROVED);
+      assertEquals(orders.get(order2Id).getState(), OrderState.REJECTED);
     });
   }
 
@@ -101,18 +97,18 @@ public class CustomersAndOrdersE2ETest{
 
     assertEquals(HttpStatus.OK, response.getStatusCode());
 
-    Assert.assertNotNull(response);
+    Assert.notNull(response);
 
     return response.getBody();
   }
 
 
-  private Long createCustomer(String name, Money credit) {
+  private Long createCustomer(String name, BigDecimal credit) {
     return restTemplate.postForObject(baseUrlCustomers("customers"),
             new CreateCustomerRequest(name, credit), CreateCustomerResponse.class).getCustomerId();
   }
 
-  private Long createOrder(Long customerId, Money orderTotal) {
+  private Long createOrder(Long customerId, BigDecimal orderTotal) {
     return restTemplate.postForObject(baseUrlOrders("orders"),
             new CreateOrderRequest(customerId, orderTotal), CreateOrderResponse.class).getOrderId();
   }

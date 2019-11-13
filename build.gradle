@@ -34,23 +34,6 @@ dockerCompose {
     environment.put "EVENTUATE_KAFKA_VERSION", eventuateMessagingKafkaImageVersion
     environment.put "EVENTUATE_CDC_VERSION", eventuateCdcImageVersion
 
-    mysqlbinlogOnly {
-        projectName = null
-        startedServices = [ 'mysql']
-        useComposeFiles = ["docker-compose-mysql-binlog.yml"]
-    }
-
-    mysqlbinlog {
-        projectName = null
-        useComposeFiles = ["docker-compose-mysql-binlog.yml"]
-    }
-
-    mysqlbinlogcdc {
-        projectName = null
-        useComposeFiles = ["docker-compose-mysql-binlog.yml"]
-        startedServices = ["cdcservice"]
-    }
-
     postgrespolling {
         projectName = null
         useComposeFiles = ["docker-compose-postgres-polling.yml"]
@@ -59,7 +42,7 @@ dockerCompose {
     postgrespollingcdc {
         projectName = null
         useComposeFiles = ["docker-compose-postgres-polling.yml"]
-        startedServices = ["cdcservice"]
+        startedServices = ["cdcservice", "proxy"]
     }
 
     postgreswal {
@@ -70,9 +53,6 @@ dockerCompose {
     postgreswalcdc {
         projectName = null
         useComposeFiles = ["docker-compose-postgres-wal.yml"]
-        startedServices = ["cdcservice"]
+        startedServices = ["cdcservice", "proxy"]
     }
 }
-
-mysqlbinlogComposeUp.dependsOn(mysqlbinlogComposeBuild)
-mysqlbinlogComposeUp.dependsOn(mysqlbinlogOnlyComposeUp)

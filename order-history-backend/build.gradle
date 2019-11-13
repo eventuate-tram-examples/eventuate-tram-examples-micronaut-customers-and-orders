@@ -13,7 +13,6 @@ plugins {
 }
 
 apply plugin: VerifyMongoDBConfigurationPlugin
-
 apply plugin: 'docker-compose'
 
 dockerCompose.isRequiredBy(test)
@@ -22,23 +21,27 @@ dockerCompose {
     useComposeFiles = ['docker-compose-integration-tests.yml']
 }
 
-dependencyManagement {
-    imports {
-        mavenBom "io.micronaut:micronaut-bom:$micronautVersion"
-    }
+repositories {
+    mavenCentral()
+    maven { url "https://jcenter.bintray.com" }
 }
 
 dependencies {
+    implementation platform("io.micronaut:micronaut-bom:$micronautVersion")
+    annotationProcessor platform("io.micronaut:micronaut-bom:$micronautVersion")
+    testAnnotationProcessor platform("io.micronaut:micronaut-bom:$micronautVersion")
+
     compile project(":order-history-common")
 
     compile "org.mongodb:mongo-java-driver"
     compile 'io.micronaut.configuration:micronaut-mongo-reactive'
 
+    compile "io.eventuate.tram.core:eventuate-tram-producer-jdbc-micronaut:$eventuateTramVersion"
+    compile "io.eventuate.tram.core:eventuate-tram-consumer-common-micronaut:$eventuateTramVersion"
     compile "io.eventuate.tram.core:eventuate-tram-messaging-micronaut:$eventuateTramVersion"
     compile "io.eventuate.tram.core:eventuate-tram-events-micronaut:$eventuateTramVersion"
-    compile "io.eventuate.tram.core:eventuate-tram-consumer-kafka-micronaut:$eventuateTramVersion"
+    compile "io.eventuate.messaging.http:eventuate-tram-consumer-http-micronaut:$eventuateTramMessagingHttpVersion"
 
-    compile "io.micronaut:micronaut-spring"
     annotationProcessor "io.micronaut:micronaut-inject-java"
     annotationProcessor "io.micronaut:micronaut-validation"
     annotationProcessor "io.micronaut.configuration:micronaut-openapi"

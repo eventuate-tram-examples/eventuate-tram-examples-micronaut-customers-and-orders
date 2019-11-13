@@ -1,5 +1,6 @@
-FROM java:openjdk-8u111-alpine
-RUN apk --no-cache add curl
-HEALTHCHECK --start-period=30s --interval=5s CMD curl -f http://localhost:8080/health || exit 1
-CMD java ${JAVA_OPTS} -jar order-history-service-*.jar
-COPY build/libs/order-history-service-*.jar .
+FROM oracle/graalvm-ce
+COPY build/libs/order-history-service-0.1.jar .
+COPY reflection .
+RUN gu install native-image
+RUN native-image -cp ./order-history-service-0.1.jar
+CMD ./order-history-service-executable

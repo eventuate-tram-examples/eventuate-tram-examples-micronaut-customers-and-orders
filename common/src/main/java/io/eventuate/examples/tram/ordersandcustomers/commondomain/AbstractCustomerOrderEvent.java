@@ -1,7 +1,9 @@
 package io.eventuate.examples.tram.ordersandcustomers.commondomain;
 
 import io.eventuate.tram.events.common.DomainEvent;
+import io.micronaut.core.annotation.Introspected;
 
+@Introspected
 public abstract class AbstractCustomerOrderEvent implements DomainEvent {
   protected Long orderId;
 

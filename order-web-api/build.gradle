@@ -13,7 +13,6 @@ dependencies {
     implementation platform("io.micronaut:micronaut-bom:$micronautVersion")
     annotationProcessor platform("io.micronaut:micronaut-bom:$micronautVersion")
 
-    annotationProcessor "io.micronaut.data:micronaut-data-processor:$micronautDataVersion" // necessary
     annotationProcessor "io.micronaut:micronaut-inject-java"
     annotationProcessor "io.micronaut:micronaut-validation"
     compile "io.micronaut:micronaut-inject"

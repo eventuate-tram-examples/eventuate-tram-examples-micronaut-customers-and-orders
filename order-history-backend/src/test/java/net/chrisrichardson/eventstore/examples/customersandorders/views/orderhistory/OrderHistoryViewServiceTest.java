@@ -1,6 +1,5 @@
 package net.chrisrichardson.eventstore.examples.customersandorders.views.orderhistory;
 
-import io.eventuate.examples.tram.ordersandcustomers.commondomain.Money;
 import io.eventuate.examples.tram.ordersandcustomers.commondomain.OrderState;
 import io.eventuate.examples.tram.ordersandcustomers.orderhistory.backend.CustomerViewRepository;
 import io.eventuate.examples.tram.ordersandcustomers.orderhistory.backend.OrderHistoryViewService;
@@ -12,8 +11,10 @@ import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import java.math.BigDecimal;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @MicronautTest
 public class OrderHistoryViewServiceTest {
@@ -30,13 +31,13 @@ public class OrderHistoryViewServiceTest {
   @Test
   public void shouldCreateCustomerAndOrdersEtc() {
     Long customerId = System.nanoTime();
-    Money creditLimit = new Money(2000);
+    BigDecimal creditLimit = new BigDecimal(2000);
     String customerName = "Fred";
 
     Long orderId1 = System.nanoTime();
-    Money orderTotal1 = new Money(1234);
+    BigDecimal orderTotal1 = new BigDecimal(1234);
     Long orderId2 = System.nanoTime();
-    Money orderTotal2 = new Money(3000);
+    BigDecimal orderTotal2 = new BigDecimal(3000);
 
     orderHistoryViewService.createCustomer(customerId, customerName, creditLimit);
     orderHistoryViewService.addOrder(customerId, orderId1, orderTotal1);

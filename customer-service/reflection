@@ -1,0 +1,83 @@
+[
+    {
+        "name" : "io.eventuate.examples.tram.ordersandcustomers.commondomain.AbstractCustomerOrderEvent",
+        "allDeclaredConstructors" : true,
+        "allPublicConstructors" : true,
+        "allDeclaredMethods" : true,
+        "allPublicMethods" : true,
+        "allDeclaredClasses" : true,
+        "allPublicClasses" : true
+    },
+    {
+        "name" : "io.eventuate.examples.tram.ordersandcustomers.commondomain.CustomerCreatedEvent",
+        "allDeclaredConstructors" : true,
+        "allPublicConstructors" : true,
+        "allDeclaredMethods" : true,
+        "allPublicMethods" : true,
+        "allDeclaredClasses" : true,
+        "allPublicClasses" : true
+    },
+    {
+        "name" : "io.eventuate.examples.tram.ordersandcustomers.commondomain.CustomerCreditReservationFailedEvent",
+        "allDeclaredConstructors" : true,
+        "allPublicConstructors" : true,
+        "allDeclaredMethods" : true,
+        "allPublicMethods" : true,
+        "allDeclaredClasses" : true,
+        "allPublicClasses" : true
+    },
+    {
+        "name" : "io.eventuate.examples.tram.ordersandcustomers.commondomain.CustomerCreditReservedEvent",
+        "allDeclaredConstructors" : true,
+        "allPublicConstructors" : true,
+        "allDeclaredMethods" : true,
+        "allPublicMethods" : true,
+        "allDeclaredClasses" : true,
+        "allPublicClasses" : true
+    },
+    {
+        "name" : "io.eventuate.examples.tram.ordersandcustomers.commondomain.CustomerValidationFailedEvent",
+        "allDeclaredConstructors" : true,
+        "allPublicConstructors" : true,
+        "allDeclaredMethods" : true,
+        "allPublicMethods" : true,
+        "allDeclaredClasses" : true,
+        "allPublicClasses" : true
+    },
+    {
+        "name" : "io.eventuate.examples.tram.ordersandcustomers.commondomain.OrderApprovedEvent",
+        "allDeclaredConstructors" : true,
+        "allPublicConstructors" : true,
+        "allDeclaredMethods" : true,
+        "allPublicMethods" : true,
+        "allDeclaredClasses" : true,
+        "allPublicClasses" : true
+    },
+    {
+         "name" : "io.eventuate.examples.tram.ordersandcustomers.commondomain.OrderCreatedEvent",
+         "allDeclaredConstructors" : true,
+         "allPublicConstructors" : true,
+         "allDeclaredMethods" : true,
+         "allPublicMethods" : true,
+         "allDeclaredClasses" : true,
+         "allPublicClasses" : true
+    },
+    {
+        "name" : "io.eventuate.examples.tram.ordersandcustomers.commondomain.OrderDetails",
+        "allDeclaredConstructors" : true,
+        "allPublicConstructors" : true,
+        "allDeclaredMethods" : true,
+        "allPublicMethods" : true,
+        "allDeclaredClasses" : true,
+        "allPublicClasses" : true
+    },
+    {
+        "name" : "io.eventuate.examples.tram.ordersandcustomers.commondomain.OrderRejectedEvent",
+        "allDeclaredConstructors" : true,
+        "allPublicConstructors" : true,
+        "allDeclaredMethods" : true,
+        "allPublicMethods" : true,
+        "allDeclaredClasses" : true,
+        "allPublicClasses" : true
+    }
+]

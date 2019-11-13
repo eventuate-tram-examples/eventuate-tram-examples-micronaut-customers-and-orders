@@ -1,12 +1,12 @@
 package io.eventuate.examples.tram.ordersandcustomers.customers.domain;
 
 import io.eventuate.examples.tram.ordersandcustomers.commondomain.CustomerCreatedEvent;
-import io.eventuate.examples.tram.ordersandcustomers.commondomain.Money;
 import io.eventuate.tram.events.publisher.ResultWithEvents;
 
 import javax.persistence.*;
-import java.util.Collections;
-import java.util.Map;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import static java.util.Collections.singletonList;
 
@@ -15,34 +15,35 @@ import static java.util.Collections.singletonList;
 public class Customer {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.TABLE)
+  @GeneratedValue
   private Long id;
 
   private String name;
 
-  @Embedded
-  private Money creditLimit;
+  private BigDecimal creditLimit;
 
-  @ElementCollection
-  private Map<Long, Money> creditReservations;
+  @OneToMany
+  private List<CreditReservation> creditReservations = new ArrayList<>();
 
-  Money availableCredit() {
-    return creditLimit.subtract(creditReservations.values().stream().reduce(Money.ZERO, Money::add));
+  BigDecimal availableCredit() {
+    return creditLimit
+            .subtract(creditReservations
+                    .stream()
+                    .map(CreditReservation::getCredit)
+                    .reduce(new BigDecimal(0), BigDecimal::add));
   }
 
   public Customer() {
   }
 
-  public Customer(String name, Money creditLimit) {
+  public Customer(String name, BigDecimal creditLimit) {
     this.name = name;
     this.creditLimit = creditLimit;
-    this.creditReservations = Collections.emptyMap();
   }
 
-  public static ResultWithEvents<Customer> create(String name, Money creditLimit) {
-    Customer customer = new Customer(name, new Money(creditLimit.getAmount()));
-    CustomerCreatedEvent customerCreatedEvent = new CustomerCreatedEvent(customer.getName(),
-            new Money(creditLimit.getAmount()));
+  public static ResultWithEvents<Customer> create(String name, BigDecimal creditLimit) {
+    Customer customer = new Customer(name, creditLimit);
+    CustomerCreatedEvent customerCreatedEvent = new CustomerCreatedEvent(customer.getName(), creditLimit);
     return new ResultWithEvents<>(customer, singletonList(customerCreatedEvent));
   }
 
@@ -62,20 +63,31 @@ public class Customer {
     this.name = name;
   }
 
-  public Money getCreditLimit() {
+  public BigDecimal getCreditLimit() {
     return creditLimit;
   }
 
-  public void setCreditLimit(Money creditLimit) {
+  public void setCreditLimit(BigDecimal creditLimit) {
     this.creditLimit = creditLimit;
   }
 
-  public void reserveCredit(Long orderId, Money orderTotal) {
-    Money order = new Money(orderTotal.getAmount());
-
-    if (availableCredit().isGreaterThanOrEqual(order)) {
-      creditReservations.put(orderId, order);
+  public CreditReservation reserveCredit(Long orderId, BigDecimal orderTotal) {
+    if (availableCredit().compareTo(orderTotal) >= 0) {
+      CreditReservation creditReservation = new CreditReservation();
+      creditReservation.setCredit(orderTotal);
+      creditReservation.setOrderId(orderId);
+      creditReservation.setCustomer(this);
+      creditReservations.add(creditReservation);
+      return creditReservation;
     } else
       throw new CustomerCreditLimitExceededException();
+  }
+
+  public List<CreditReservation> getCreditReservations() {
+    return creditReservations;
+  }
+
+  public void setCreditReservations(List<CreditReservation> creditReservations) {
+    this.creditReservations = creditReservations;
   }
 }
