@@ -7,8 +7,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - eventuate-tram-examples-micronaut-customers-and-orders-{{ checksum "gradle.properties" }}
-            - eventuate-tram-examples-micronaut-customers-and-orders-
+            - eventuate-tram-examples-micronaut-customers-and-orders-graal-{{ checksum "gradle.properties" }}
+            - eventuate-tram-examples-micronaut-customers-and-orders-graal-
       - run:
           command: |
             . ./.circleci/setenv-circle-ci.sh
@@ -16,15 +16,7 @@ jobs:
       - save_cache:
           paths:
             - ~/.gradle
-          key: eventuate-tram-examples-micronaut-customers-and-orders-{{ checksum "gradle.properties" }}
-      - run:
-          command: |
-            . ./.circleci/setenv-circle-ci.sh
-            ./build-and-test-all-mysql-binlog.sh
-      - run:
-          command: |
-            . ./.circleci/setenv-circle-ci.sh
-            ./build-and-test-all-postgres-polling.sh
+          key: eventuate-tram-examples-micronaut-customers-and-orders-graal-{{ checksum "gradle.properties" }}
       - run:
           command: |
             . ./.circleci/setenv-circle-ci.sh

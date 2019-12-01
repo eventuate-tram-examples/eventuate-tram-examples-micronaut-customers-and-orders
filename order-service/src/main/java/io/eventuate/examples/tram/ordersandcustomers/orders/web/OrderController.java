@@ -2,7 +2,7 @@ package io.eventuate.examples.tram.ordersandcustomers.orders.web;
 
 import io.eventuate.examples.tram.ordersandcustomers.commondomain.OrderDetails;
 import io.eventuate.examples.tram.ordersandcustomers.orders.domain.Order;
-import io.eventuate.examples.tram.ordersandcustomers.orders.repositroy.OrderRepository;
+import io.eventuate.examples.tram.ordersandcustomers.orders.repository.OrderRepository;
 import io.eventuate.examples.tram.ordersandcustomers.orders.service.OrderService;
 import io.eventuate.examples.tram.ordersandcustomers.orders.webapi.CreateOrderRequest;
 import io.eventuate.examples.tram.ordersandcustomers.orders.webapi.CreateOrderResponse;

@@ -4,7 +4,7 @@ import io.eventuate.examples.tram.ordersandcustomers.commondomain.OrderApprovedE
 import io.eventuate.examples.tram.ordersandcustomers.commondomain.OrderDetails;
 import io.eventuate.examples.tram.ordersandcustomers.commondomain.OrderRejectedEvent;
 import io.eventuate.examples.tram.ordersandcustomers.orders.domain.Order;
-import io.eventuate.examples.tram.ordersandcustomers.orders.repositroy.OrderRepository;
+import io.eventuate.examples.tram.ordersandcustomers.orders.repository.OrderRepository;
 import io.eventuate.tram.events.publisher.DomainEventPublisher;
 import io.eventuate.tram.events.publisher.ResultWithEvents;
 

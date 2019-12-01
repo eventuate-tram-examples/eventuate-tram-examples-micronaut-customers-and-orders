@@ -1,4 +1,4 @@
-package io.eventuate.examples.tram.ordersandcustomers.orders.repositroy;
+package io.eventuate.examples.tram.ordersandcustomers.orders.repository;
 
 import io.eventuate.examples.tram.ordersandcustomers.commondomain.OrderState;
 import io.eventuate.examples.tram.ordersandcustomers.orders.domain.Order;

@@ -4,8 +4,6 @@ services:
     build: ./order-service/
     ports:
       - "8081:8080"
-    volumes:
-      - ./build/libs:/app
     depends_on:
       - postgres
       - kafka
@@ -27,8 +25,6 @@ services:
     build: ./customer-service/
     ports:
       - "8082:8080"
-    volumes:
-      - ./build/libs:/app
     depends_on:
       - postgres
       - kafka
@@ -125,10 +121,11 @@ services:
     image: eventuateio/eventuate-tram-http-proxy-service:$EVENTUATE_PROXY_SERVICE_IMAGE
     ports:
       - "8098:8080"
-    links:
+    depends_on:
       - postgres
       - kafka
       - zookeeper
+      - cdcservice
     environment:
       EVENTUATELOCAL_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
       EVENTUATELOCAL_ZOOKEEPER_CONNECTION_STRING: zookeeper:2181
