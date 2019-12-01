@@ -21,6 +21,7 @@ jobs:
           command: |
             . ./.circleci/setenv-circle-ci.sh
             ./build-and-test-all-postgres-wal.sh
+          no_output_timeout: 30m
       - run:
           name: Save test results
           command: |
