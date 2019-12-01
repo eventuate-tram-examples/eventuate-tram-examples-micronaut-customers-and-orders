@@ -1,16 +1,19 @@
 package io.eventuate.examples.tram.ordersandcustomers.customers.webapi;
 
 
-import io.eventuate.examples.tram.ordersandcustomers.commondomain.Money;
+import io.micronaut.core.annotation.Introspected;
 
+import java.math.BigDecimal;
+
+@Introspected
 public class CreateCustomerRequest {
   private String name;
-  private Money creditLimit;
+  private BigDecimal creditLimit;
 
   public CreateCustomerRequest() {
   }
 
-  public CreateCustomerRequest(String name, Money creditLimit) {
+  public CreateCustomerRequest(String name, BigDecimal creditLimit) {
 
     this.name = name;
     this.creditLimit = creditLimit;
@@ -21,7 +24,15 @@ public class CreateCustomerRequest {
     return name;
   }
 
-  public Money getCreditLimit() {
+  public BigDecimal getCreditLimit() {
     return creditLimit;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public void setCreditLimit(BigDecimal creditLimit) {
+    this.creditLimit = creditLimit;
   }
 }

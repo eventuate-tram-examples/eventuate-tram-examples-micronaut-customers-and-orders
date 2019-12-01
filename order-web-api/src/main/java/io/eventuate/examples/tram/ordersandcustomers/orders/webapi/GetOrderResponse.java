@@ -2,7 +2,9 @@ package io.eventuate.examples.tram.ordersandcustomers.orders.webapi;
 
 
 import io.eventuate.examples.tram.ordersandcustomers.commondomain.OrderState;
+import io.micronaut.core.annotation.Introspected;
 
+@Introspected
 public class GetOrderResponse {
   private Long orderId;
   private OrderState orderState;

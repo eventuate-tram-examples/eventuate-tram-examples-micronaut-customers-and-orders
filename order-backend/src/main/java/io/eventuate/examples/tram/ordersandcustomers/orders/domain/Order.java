@@ -1,13 +1,13 @@
 package io.eventuate.examples.tram.ordersandcustomers.orders.domain;
 
 
-import io.eventuate.examples.tram.ordersandcustomers.commondomain.Money;
 import io.eventuate.examples.tram.ordersandcustomers.commondomain.OrderCreatedEvent;
 import io.eventuate.examples.tram.ordersandcustomers.commondomain.OrderDetails;
 import io.eventuate.examples.tram.ordersandcustomers.commondomain.OrderState;
 import io.eventuate.tram.events.publisher.ResultWithEvents;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 import static java.util.Collections.singletonList;
 
@@ -22,19 +22,21 @@ public class Order {
 
   private OrderState state;
 
-  @Embedded
-  private OrderDetails orderDetails;
+  private Long customerId;
+
+  private BigDecimal orderTotal;
 
   public Order() {
   }
 
   public Order(OrderDetails orderDetails) {
-    this.orderDetails = orderDetails;
+    this.customerId = orderDetails.getCustomerId();
+    this.orderTotal = orderDetails.getOrderTotal();
     this.state = OrderState.PENDING;
   }
 
   public static ResultWithEvents<Order> createOrder(OrderDetails orderDetails) {
-    Order order = new Order(new OrderDetails(orderDetails.getCustomerId(), new Money(orderDetails.getOrderTotal().getAmount())));
+    Order order = new Order(new OrderDetails(orderDetails.getCustomerId(), orderDetails.getOrderTotal()));
     OrderCreatedEvent orderCreatedEvent = new OrderCreatedEvent(orderDetails);
     return new ResultWithEvents<>(order, singletonList(orderCreatedEvent));
   }
@@ -55,7 +57,31 @@ public class Order {
     return state;
   }
 
-  public OrderDetails getOrderDetails() {
-    return orderDetails;
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  public void setState(OrderState state) {
+    this.state = state;
+  }
+
+  public Long getCustomerId() {
+    return customerId;
+  }
+
+  public void setCustomerId(Long customerId) {
+    this.customerId = customerId;
+  }
+
+  public BigDecimal getOrderTotal() {
+    return orderTotal;
+  }
+
+  public void setOrderTotal(BigDecimal orderTotal) {
+    this.orderTotal = orderTotal;
+  }
+
+  public OrderDetails orderDetails() {
+    return new OrderDetails(customerId, orderTotal);
   }
 }

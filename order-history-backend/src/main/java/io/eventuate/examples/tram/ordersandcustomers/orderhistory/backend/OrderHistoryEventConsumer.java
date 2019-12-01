@@ -7,14 +7,16 @@ import io.eventuate.tram.events.subscriber.DomainEventEnvelope;
 import io.eventuate.tram.events.subscriber.DomainEventHandlers;
 import io.eventuate.tram.events.subscriber.DomainEventHandlersBuilder;
 
-import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
 public class OrderHistoryEventConsumer {
 
-  @Inject
   private OrderHistoryViewService orderHistoryViewService;
+
+  public OrderHistoryEventConsumer(OrderHistoryViewService orderHistoryViewService) {
+    this.orderHistoryViewService = orderHistoryViewService;
+  }
 
   public DomainEventHandlers domainEventHandlers() {
     return DomainEventHandlersBuilder

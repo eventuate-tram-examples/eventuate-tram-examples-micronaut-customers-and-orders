@@ -1,20 +1,20 @@
 package io.eventuate.examples.tram.ordersandcustomers.commondomain;
 
-import javax.persistence.Embeddable;
-import javax.persistence.Embedded;
+import io.micronaut.core.annotation.Introspected;
 
-@Embeddable
+import java.math.BigDecimal;
+
+@Introspected
 public class OrderDetails {
 
   private Long customerId;
 
-  @Embedded
-  private Money orderTotal;
+  private BigDecimal orderTotal;
 
   public OrderDetails() {
   }
 
-  public OrderDetails(Long customerId, Money orderTotal) {
+  public OrderDetails(Long customerId, BigDecimal orderTotal) {
     this.customerId = customerId;
     this.orderTotal = orderTotal;
   }
@@ -23,7 +23,15 @@ public class OrderDetails {
     return customerId;
   }
 
-  public Money getOrderTotal() {
+  public BigDecimal getOrderTotal() {
     return orderTotal;
+  }
+
+  public void setCustomerId(Long customerId) {
+    this.customerId = customerId;
+  }
+
+  public void setOrderTotal(BigDecimal orderTotal) {
+    this.orderTotal = orderTotal;
   }
 }

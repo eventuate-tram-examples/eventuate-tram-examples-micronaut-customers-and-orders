@@ -1,9 +1,17 @@
+jackson:
+  bean-introspection-module: true
 datasources:
   default:
     url: ${DB_URL}
     driverClassName: ${DB_DRIVERCLASSNAME}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
+    schema-generate: CREATE_DROP
+    dialect: POSTGRES
+    maxActive: 2
+    maxIdle: 2
+    minIdle: 0
+    initialSize: 2
 jpa:
   default:
     packages-to-scan:
@@ -19,6 +27,8 @@ endpoints:
     sensitive: false
     details-visible: ANONYMOUS
 micronaut:
+  application:
+    name: order-service
   router:
     static-resources:
       swagger-ui:
@@ -27,4 +37,3 @@ micronaut:
       swagger:
         paths: classpath:META-INF/swagger
         mapping: /swagger/**
-

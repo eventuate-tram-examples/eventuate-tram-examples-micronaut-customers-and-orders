@@ -11,6 +11,7 @@ services:
       - kafka
       - zookeeper
       - cdcservice
+      - proxy
     environment:
       DB_URL: jdbc:postgresql://postgres/eventuate
       DB_USERNAME: eventuate
@@ -18,7 +19,10 @@ services:
       DB_DRIVERCLASSNAME: org.postgresql.Driver
       EVENTUATELOCAL_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
       EVENTUATELOCAL_ZOOKEEPER_CONNECTION_STRING: zookeeper:2181
-  
+      EVENTUATE_HTTP_PROXY_BASE_URL: http://proxy:8080/subscriptions
+      EVENTUATE_HTTP_CONSUMER_BASE_URL: http://${DOCKER_HOST_IP}:8081/messages
+
+
   customerservice:
     build: ./customer-service/
     ports:
@@ -30,6 +34,7 @@ services:
       - kafka
       - zookeeper
       - cdcservice
+      - proxy
     environment:
       DB_URL: jdbc:postgresql://postgres/eventuate
       DB_USERNAME: eventuate
@@ -37,7 +42,10 @@ services:
       DB_DRIVERCLASSNAME: org.postgresql.Driver
       EVENTUATELOCAL_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
       EVENTUATELOCAL_ZOOKEEPER_CONNECTION_STRING: zookeeper:2181
-  
+      EVENTUATE_HTTP_PROXY_BASE_URL: http://proxy:8080/subscriptions
+      EVENTUATE_HTTP_CONSUMER_BASE_URL: http://${DOCKER_HOST_IP}:8082/messages
+
+
   orderhistoryservice:
     build: ./order-history-service/
     ports:
@@ -47,11 +55,15 @@ services:
       - postgres
       - kafka
       - zookeeper
+      - proxy
     environment:
       SPRING_DATA_MONGODB_URI: mongodb://mongodb/customers_and_orders
       EVENTUATELOCAL_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
       EVENTUATELOCAL_ZOOKEEPER_CONNECTION_STRING: zookeeper:2181
-  
+      EVENTUATE_HTTP_PROXY_BASE_URL: http://proxy:8080/subscriptions
+      EVENTUATE_HTTP_CONSUMER_BASE_URL: http://${DOCKER_HOST_IP}:8083/messages
+
+
   zookeeper:
     image: eventuateio/eventuate-zookeeper:$EVENTUATE_COMMON_VERSION
     ports:
@@ -70,6 +82,7 @@ services:
       - ZOOKEEPER_SERVERS=zookeeper:2181
       - ZOOKEEPER_CONNECTION_TIMEOUT_MS=60000
 
+
   postgres:
     image: eventuateio/eventuate-postgres:$EVENTUATE_COMMON_VERSION
     ports:
@@ -77,15 +90,16 @@ services:
     environment:
       POSTGRES_USER: eventuate
       POSTGRES_PASSWORD: eventuate
-  
-  
+
+
   mongodb:
     image: mongo:3.0.4
     hostname: mongodb
     command: mongod --smallfiles
     ports:
       - "27017:27017"
-  
+
+
   cdcservice:
     image: eventuateio/eventuate-cdc-service:$EVENTUATE_CDC_VERSION
     ports:
@@ -105,3 +119,20 @@ services:
       EVENTUATELOCAL_ZOOKEEPER_CONNECTION_STRING: zookeeper:2181
       EVENTUATELOCAL_CDC_READER_NAME: PostgresWalReader
       SPRING_PROFILES_ACTIVE: PostgresWal
+
+
+  proxy:
+    image: eventuateio/eventuate-tram-http-proxy-service:$EVENTUATE_PROXY_SERVICE_IMAGE
+    ports:
+      - "8098:8080"
+    links:
+      - postgres
+      - kafka
+      - zookeeper
+    environment:
+      EVENTUATELOCAL_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      EVENTUATELOCAL_ZOOKEEPER_CONNECTION_STRING: zookeeper:2181
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres/eventuate
+      SPRING_DATASOURCE_USERNAME: eventuate
+      SPRING_DATASOURCE_PASSWORD: eventuate
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver

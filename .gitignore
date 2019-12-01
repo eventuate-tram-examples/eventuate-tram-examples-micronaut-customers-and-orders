@@ -6,3 +6,5 @@ build/
 .terraform
 terraform.tfstate*
 out
+*/swagger
+*/swagger-ui

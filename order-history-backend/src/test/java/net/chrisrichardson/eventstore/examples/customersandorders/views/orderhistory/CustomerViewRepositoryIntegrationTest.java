@@ -1,6 +1,5 @@
 package net.chrisrichardson.eventstore.examples.customersandorders.views.orderhistory;
 
-import io.eventuate.examples.tram.ordersandcustomers.commondomain.Money;
 import io.eventuate.examples.tram.ordersandcustomers.orderhistory.backend.CustomerViewRepository;
 import io.eventuate.examples.tram.ordersandcustomers.orderhistory.common.CustomerView;
 import io.micronaut.test.annotation.MicronautTest;
@@ -8,7 +7,9 @@ import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
 
-import static org.junit.Assert.assertEquals;
+import java.math.BigDecimal;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @MicronautTest
 public class CustomerViewRepositoryIntegrationTest {
@@ -20,7 +21,7 @@ public class CustomerViewRepositoryIntegrationTest {
   public void shouldCreateAndFindCustomer() {
 
     Long customerId = System.nanoTime();
-    Money creditLimit = new Money(2000);
+    BigDecimal creditLimit = new BigDecimal(2000);
     String customerName = "Fred";
 
     customerViewRepository.addCustomer(customerId, customerName, creditLimit);

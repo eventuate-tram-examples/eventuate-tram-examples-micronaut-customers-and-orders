@@ -2,6 +2,7 @@ package io.eventuate.examples.tram.ordersandcustomers.orders.web;
 
 import io.eventuate.examples.tram.ordersandcustomers.commondomain.OrderDetails;
 import io.eventuate.examples.tram.ordersandcustomers.orders.domain.Order;
+import io.eventuate.examples.tram.ordersandcustomers.orders.repositroy.OrderRepository;
 import io.eventuate.examples.tram.ordersandcustomers.orders.service.OrderService;
 import io.eventuate.examples.tram.ordersandcustomers.orders.webapi.CreateOrderRequest;
 import io.eventuate.examples.tram.ordersandcustomers.orders.webapi.CreateOrderResponse;
@@ -10,21 +11,19 @@ import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Post;
-import io.micronaut.spring.tx.annotation.Transactional;
 
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import java.util.Optional;
+import javax.transaction.Transactional;
 
 @Controller
 public class OrderController {
 
-  @Inject
   private OrderService orderService;
+  private OrderRepository orderRepository;
 
-  @PersistenceContext
-  private EntityManager entityManager;
+  public OrderController(OrderService orderService, OrderRepository orderRepository) {
+    this.orderService = orderService;
+    this.orderRepository = orderRepository;
+  }
 
   @Post(value = "/orders")
   public CreateOrderResponse createOrder(CreateOrderRequest createOrderRequest) {
@@ -35,7 +34,7 @@ public class OrderController {
   @Get("/orders/{orderId}")
   @Transactional
   public HttpResponse<GetOrderResponse> getOrder(Long orderId) {
-     return Optional.ofNullable(entityManager.find(Order.class, orderId))
+     return orderRepository.findById(orderId)
             .map(order -> HttpResponse.ok(new GetOrderResponse(order.getId(), order.getState())))
             .orElseGet(HttpResponse::notFound);
   }

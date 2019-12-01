@@ -7,8 +7,10 @@ import io.micronaut.context.annotation.Factory;
 
 import javax.inject.Singleton;
 
+
 @Factory
 public class CustomerFactory {
+
   @Singleton
   public DomainEventDispatcher domainEventDispatcher(OrderEventConsumer orderEventConsumer,
                                                      DomainEventDispatcherFactory domainEventDispatcherFactory) {

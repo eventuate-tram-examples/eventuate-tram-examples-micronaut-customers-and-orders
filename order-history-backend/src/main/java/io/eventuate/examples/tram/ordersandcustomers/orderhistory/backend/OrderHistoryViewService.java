@@ -1,7 +1,8 @@
 package io.eventuate.examples.tram.ordersandcustomers.orderhistory.backend;
 
-import io.eventuate.examples.tram.ordersandcustomers.commondomain.Money;
 import io.eventuate.examples.tram.ordersandcustomers.commondomain.OrderState;
+
+import java.math.BigDecimal;
 
 public class OrderHistoryViewService {
 
@@ -14,11 +15,11 @@ public class OrderHistoryViewService {
     this.orderViewRepository = orderViewRepository;
   }
 
-  public void createCustomer(Long customerId, String customerName, Money creditLimit) {
+  public void createCustomer(Long customerId, String customerName, BigDecimal creditLimit) {
     customerViewRepository.addCustomer(customerId, customerName, creditLimit);
   }
 
-  public void addOrder(Long customerId, Long orderId, Money orderTotal) {
+  public void addOrder(Long customerId, Long orderId, BigDecimal orderTotal) {
     customerViewRepository.addOrder(customerId, orderId, orderTotal);
     orderViewRepository.addOrder(orderId, orderTotal);
   }

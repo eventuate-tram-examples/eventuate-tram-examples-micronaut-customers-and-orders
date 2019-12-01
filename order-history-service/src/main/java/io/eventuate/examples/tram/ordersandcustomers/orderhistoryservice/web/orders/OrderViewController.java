@@ -6,13 +6,14 @@ import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 
-import javax.inject.Inject;
-
 @Controller
 public class OrderViewController {
 
-  @Inject
   private OrderViewRepository orderViewRepository;
+
+  public OrderViewController(OrderViewRepository orderViewRepository) {
+    this.orderViewRepository = orderViewRepository;
+  }
 
   @Get("/orders/{orderId}")
   public HttpResponse<OrderView> getCustomer(Long orderId) {
