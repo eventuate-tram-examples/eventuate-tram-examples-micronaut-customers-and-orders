@@ -36,7 +36,6 @@ dependencies {
     compile "org.mongodb:mongo-java-driver"
     compile 'io.micronaut.configuration:micronaut-mongo-reactive'
 
-    compile "io.eventuate.tram.core:eventuate-tram-producer-jdbc-micronaut:$eventuateTramVersion"
     compile "io.eventuate.tram.core:eventuate-tram-consumer-common-micronaut:$eventuateTramVersion"
     compile "io.eventuate.tram.core:eventuate-tram-messaging-micronaut:$eventuateTramVersion"
     compile "io.eventuate.tram.core:eventuate-tram-events-micronaut:$eventuateTramVersion"

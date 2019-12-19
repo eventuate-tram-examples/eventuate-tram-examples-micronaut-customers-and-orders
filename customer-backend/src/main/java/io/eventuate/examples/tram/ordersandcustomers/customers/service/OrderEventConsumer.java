@@ -1,5 +1,6 @@
 package io.eventuate.examples.tram.ordersandcustomers.customers.service;
 
+import io.eventuate.common.jdbc.EventuateTransactionTemplate;
 import io.eventuate.examples.tram.ordersandcustomers.commondomain.CustomerCreditReservationFailedEvent;
 import io.eventuate.examples.tram.ordersandcustomers.commondomain.CustomerCreditReservedEvent;
 import io.eventuate.examples.tram.ordersandcustomers.commondomain.CustomerValidationFailedEvent;
@@ -26,10 +27,13 @@ public class OrderEventConsumer {
   private CustomerRepository customerRepository;
   private CreditReservationRepository creditReservationRepository;
   private DomainEventPublisher domainEventPublisher;
+  private EventuateTransactionTemplate eventuateTransactionTemplate;
 
-  public OrderEventConsumer(CustomerRepository customerRepository,
+  public OrderEventConsumer(EventuateTransactionTemplate eventuateTransactionTemplate,
+                            CustomerRepository customerRepository,
                             CreditReservationRepository creditReservationRepository,
                             DomainEventPublisher domainEventPublisher) {
+    this.eventuateTransactionTemplate = eventuateTransactionTemplate;
     this.customerRepository = customerRepository;
     this.creditReservationRepository = creditReservationRepository;
     this.domainEventPublisher = domainEventPublisher;
@@ -43,44 +47,47 @@ public class OrderEventConsumer {
   }
 
   private void orderCreatedEventHandler(DomainEventEnvelope<OrderCreatedEvent> domainEventEnvelope) {
+    eventuateTransactionTemplate.executeInTransaction(() -> {
+      Long orderId = Long.parseLong(domainEventEnvelope.getAggregateId());
 
-    Long orderId = Long.parseLong(domainEventEnvelope.getAggregateId());
+      OrderCreatedEvent orderCreatedEvent = domainEventEnvelope.getEvent();
 
-    OrderCreatedEvent orderCreatedEvent = domainEventEnvelope.getEvent();
+      Long customerId = orderCreatedEvent.getOrderDetails().getCustomerId();
 
-    Long customerId = orderCreatedEvent.getOrderDetails().getCustomerId();
+      Customer customer = customerRepository.findById(customerId).orElse(null);
 
-    Customer customer = customerRepository.findById(customerId).orElse(null);
+      if (customer == null) {
+        logger.info("Non-existent customer: {}", customerId);
+        domainEventPublisher.publish(Customer.class,
+                customerId,
+                Collections.singletonList(new CustomerValidationFailedEvent(orderId)));
+        return null;
+      }
 
-    if (customer == null) {
-      logger.info("Non-existent customer: {}", customerId);
-      domainEventPublisher.publish(Customer.class,
-              customerId,
-              Collections.singletonList(new CustomerValidationFailedEvent(orderId)));
-      return;
-    }
+      try {
+        customer.setCreditReservations(creditReservationRepository.findAllByCustomerId(customerId));
 
-    try {
-      customer.setCreditReservations(creditReservationRepository.findAllByCustomerId(customerId));
+        CreditReservation creditReservation = customer.reserveCredit(orderId, orderCreatedEvent.getOrderDetails().getOrderTotal());
 
-      CreditReservation creditReservation = customer.reserveCredit(orderId, orderCreatedEvent.getOrderDetails().getOrderTotal());
+        CustomerCreditReservedEvent customerCreditReservedEvent =
+                new CustomerCreditReservedEvent(orderId);
 
-      CustomerCreditReservedEvent customerCreditReservedEvent =
-              new CustomerCreditReservedEvent(orderId);
+        domainEventPublisher.publish(Customer.class,
+                customer.getId(),
+                Collections.singletonList(customerCreditReservedEvent));
 
-      domainEventPublisher.publish(Customer.class,
-              customer.getId(),
-              Collections.singletonList(customerCreditReservedEvent));
+        creditReservationRepository.save(creditReservation);
+      } catch (CustomerCreditLimitExceededException e) {
 
-      creditReservationRepository.save(creditReservation);
-    } catch (CustomerCreditLimitExceededException e) {
+        CustomerCreditReservationFailedEvent customerCreditReservationFailedEvent =
+                new CustomerCreditReservationFailedEvent(orderId);
 
-      CustomerCreditReservationFailedEvent customerCreditReservationFailedEvent =
-              new CustomerCreditReservationFailedEvent(orderId);
+        domainEventPublisher.publish(Customer.class,
+                customer.getId(),
+                Collections.singletonList(customerCreditReservationFailedEvent));
+      }
 
-      domainEventPublisher.publish(Customer.class,
-              customer.getId(),
-              Collections.singletonList(customerCreditReservationFailedEvent));
-    }
+      return null;
+    });
   }
 }
