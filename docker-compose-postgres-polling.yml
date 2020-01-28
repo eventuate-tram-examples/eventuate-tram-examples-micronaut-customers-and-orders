@@ -70,7 +70,7 @@ services:
       - 2181:2181
 
   kafka:
-    image: test-eventuate-kafka
+    image: eventuateio/eventuate-kafka:$EVENTUATE_KAFKA_VERSION
     ports:
       - 9092:9092
     depends_on:
