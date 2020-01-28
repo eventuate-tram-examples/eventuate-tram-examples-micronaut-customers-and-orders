@@ -33,6 +33,7 @@ public class OrderService {
     return order;
   }
 
+  @Transactional
   public void approveOrder(Long orderId) {
     Order order = orderRepository.findById(orderId)
             .orElseThrow(() -> new IllegalArgumentException(String.format("order with id %s not found", orderId)));
@@ -43,6 +44,7 @@ public class OrderService {
             orderId, singletonList(new OrderApprovedEvent(orderDetails)));
   }
 
+  @Transactional
   public void rejectOrder(Long orderId) {
     Order order = orderRepository.findById(orderId)
             .orElseThrow(() -> new IllegalArgumentException(String.format("order with id %s not found", orderId)));

@@ -1,13 +1,11 @@
 package io.eventuate.examples.tram.ordersandcustomers.orderhistory.backend;
 
-import io.eventuate.common.jdbc.EventuateTransactionTemplate;
 import io.eventuate.tram.events.subscriber.DomainEventDispatcher;
 import io.eventuate.tram.events.subscriber.DomainEventDispatcherFactory;
 import io.micronaut.context.annotation.Factory;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
-import java.util.function.Supplier;
 
 @Factory
 public class OrderHistoryViewBackendFactory {
@@ -22,10 +20,5 @@ public class OrderHistoryViewBackendFactory {
   @Singleton
   public DomainEventDispatcher customerHistoryDomainEventDispatcher(CustomerHistoryEventConsumer customerHistoryEventConsumer, DomainEventDispatcherFactory domainEventDispatcherFactory) {
     return domainEventDispatcherFactory.make("customerHistoryServiceEvents", customerHistoryEventConsumer.domainEventHandlers());
-  }
-
-  @Singleton
-  public EventuateTransactionTemplate eventuateTransactionTemplate() {
-    return Supplier::get;
   }
 }
