@@ -6,7 +6,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: eventuate-tram-examples-micronaut-customers-and-orders-{{ checksum "gradle.properties" }}
+          keys:
+            - eventuate-tram-examples-micronaut-customers-and-orders-{{ checksum "gradle.properties" }}
+            - eventuate-tram-examples-micronaut-customers-and-orders-
       - run:
           command: |
             . ./.circleci/setenv-circle-ci.sh
