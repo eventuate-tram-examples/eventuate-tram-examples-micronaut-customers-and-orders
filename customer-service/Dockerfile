@@ -5,7 +5,7 @@ RUN gu install native-image
 RUN native-image -cp ./customer-service-0.1-all.jar
 
 FROM frolvlad/alpine-glibc:glibc-2.30
-RUN apk add --no-cache gcc musl-dev
+RUN apk add --no-cache gcc
 RUN apk add curl
 COPY --from=0 /customer-service-executable .
 CMD ./customer-service-executable
