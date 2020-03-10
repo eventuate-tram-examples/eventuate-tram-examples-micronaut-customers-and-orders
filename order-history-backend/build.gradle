@@ -34,9 +34,9 @@ dependencies {
     compile "org.mongodb:mongo-java-driver"
     compile 'io.micronaut.configuration:micronaut-mongo-reactive'
 
-    compile "io.eventuate.tram.core:eventuate-tram-messaging-micronaut:$eventuateTramVersion"
-    compile "io.eventuate.tram.core:eventuate-tram-events-micronaut:$eventuateTramVersion"
-    compile "io.eventuate.tram.core:eventuate-tram-consumer-kafka-micronaut:$eventuateTramVersion"
+    compile "io.eventuate.tram.core:eventuate-tram-micronaut-messaging:$eventuateTramVersion"
+    compile "io.eventuate.tram.core:eventuate-tram-micronaut-events:$eventuateTramVersion"
+    compile "io.eventuate.tram.core:eventuate-tram-micronaut-consumer-kafka:$eventuateTramVersion"
 
     compile "io.micronaut:micronaut-spring"
     annotationProcessor "io.micronaut:micronaut-inject-java"
