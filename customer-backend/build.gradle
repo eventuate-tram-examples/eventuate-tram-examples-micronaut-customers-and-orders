@@ -16,11 +16,7 @@ dependencyManagement {
 dependencies {
     compile project(":common")
 
-    compile "io.eventuate.tram.core:eventuate-tram-micronaut-producer-jdbc:$eventuateTramVersion"
-    compile "io.eventuate.tram.core:eventuate-tram-micronaut-consumer-jdbc:$eventuateTramVersion"
-    compile "io.eventuate.tram.core:eventuate-tram-micronaut-messaging:$eventuateTramVersion"
-    compile "io.eventuate.tram.core:eventuate-tram-micronaut-consumer-kafka:$eventuateTramVersion"
-    compile "io.eventuate.tram.core:eventuate-tram-micronaut-events:$eventuateTramVersion"
+    compile "io.eventuate.tram.core:eventuate-tram-micronaut-jdbc-kafka:$eventuateTramVersion"
     compile "io.micronaut:micronaut-spring"
 
     runtime 'mysql:mysql-connector-java:5.1.36'
