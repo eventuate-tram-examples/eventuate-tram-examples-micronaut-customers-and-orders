@@ -17,6 +17,8 @@ dependencies {
     compile project(":common")
 
     compile "io.eventuate.tram.core:eventuate-tram-micronaut-jdbc-kafka:$eventuateTramVersion"
+    compile "io.eventuate.tram.core:eventuate-tram-micronaut-spring-jdbc-optimistic-locking:$eventuateTramVersion"
+
     compile "io.micronaut:micronaut-spring"
 
     runtime 'mysql:mysql-connector-java:5.1.36'
