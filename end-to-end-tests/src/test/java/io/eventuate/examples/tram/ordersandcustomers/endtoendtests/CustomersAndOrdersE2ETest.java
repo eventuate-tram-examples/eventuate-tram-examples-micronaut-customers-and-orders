@@ -32,7 +32,7 @@ import static org.junit.Assert.assertThat;
 @SpringBootTest(classes = CustomersAndOrdersE2ETestConfiguration.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
 public class CustomersAndOrdersE2ETest{
 
-  @Value("#{systemEnvironment['DOCKER_HOST_IP']}")
+  @Value("${DOCKER_HOST_IP:localhost}")
   private String hostName;
 
   private String baseUrlOrders(String path) {

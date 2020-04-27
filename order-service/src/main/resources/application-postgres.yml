@@ -1,0 +1,8 @@
+datasources:
+  default:
+    url: jdbc:postgresql://${POSTGRES:$DOCKER_HOST_IP:localhost}/eventuate
+    driverClassName: org.postgresql.Driver
+    username: eventuate
+    password: eventuate
+
+

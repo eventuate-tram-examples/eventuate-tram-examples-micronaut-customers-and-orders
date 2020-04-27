@@ -4,8 +4,21 @@ endpoints:
     sensitive: false
     details-visible: ANONYMOUS
 
+eventuatelocal:
+  kafka:
+    bootstrap:
+      servers: ${KAFKA:$DOCKER_HOST_IP:localhost}:${KAFKA_PORT:9092}
+  zookeeper:
+    connection:
+      string: ${ZOOKEEPER:$DOCKER_HOST_IP:localhost}:2181
+
 mongodb:
-  uri: ${SPRING_DATA_MONGODB_URI}
+  uri: mongodb://${MONGODB:$DOCKER_HOST_IP:localhost}/customers_orders
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb://${MONGODB:$DOCKER_HOST_IP:localhost}/customers_orders
 
 micronaut:
   router:
