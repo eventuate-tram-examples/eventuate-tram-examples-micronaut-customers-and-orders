@@ -1,9 +1,16 @@
 datasources:
   default:
-    url: ${DB_URL}
-    driverClassName: ${DB_DRIVERCLASSNAME}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    url: jdbc:mysql://${MYSQL:$DOCKER_HOST_IP:localhost}/eventuate
+    driverClassName: com.mysql.jdbc.Driver
+    username: mysqluser
+    password: mysqlpw
+eventuatelocal:
+  kafka:
+    bootstrap:
+      servers: ${KAFKA:$DOCKER_HOST_IP:localhost}:${KAFKA_PORT:9092}
+  zookeeper:
+    connection:
+      string: ${ZOOKEEPER:$DOCKER_HOST_IP:localhost}:2181
 jpa:
   default:
     packages-to-scan:
