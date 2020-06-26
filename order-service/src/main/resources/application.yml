@@ -8,9 +8,6 @@ eventuatelocal:
   kafka:
     bootstrap:
       servers: ${KAFKA:$DOCKER_HOST_IP:localhost}:${KAFKA_PORT:9092}
-  zookeeper:
-    connection:
-      string: ${ZOOKEEPER:$DOCKER_HOST_IP:localhost}:2181
 jpa:
   default:
     packages-to-scan:
