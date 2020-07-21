@@ -1,7 +1,7 @@
 package io.eventuate.examples.tram.ordersandcustomers.orderhistoryservice.web.customers;
 
-import io.eventuate.examples.tram.ordersandcustomers.orderhistory.backend.CustomerViewRepository;
 import io.eventuate.examples.tram.ordersandcustomers.orderhistory.common.CustomerView;
+import io.eventuate.examples.tram.ordersandcustomers.orderhistoryservice.domain.CustomerViewRepository;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;

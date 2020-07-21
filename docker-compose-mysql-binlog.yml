@@ -1,6 +1,6 @@
 version: '3'
 services:
-  orderservice:
+  order-service:
     build:
       context: ./order-service/
       args:
@@ -12,7 +12,7 @@ services:
       - mysql
       - kafka
       - zookeeper
-      - cdcservice
+      - cdc-service
     environment:
       MYSQL: mysql
       KAFKA: kafka
@@ -20,7 +20,7 @@ services:
       ZOOKEEPER: zookeeper
       JAVA_OPTS: -Xmx32m
 
-  customerservice:
+  customer-service:
     build:
       context: ./customer-service/
       args:
@@ -32,7 +32,7 @@ services:
       - mysql
       - kafka
       - zookeeper
-      - cdcservice
+      - cdc-service
     environment:
       MYSQL: mysql
       KAFKA: kafka
@@ -40,7 +40,7 @@ services:
       ZOOKEEPER: zookeeper
       JAVA_OPTS: -Xmx32m
 
-  orderhistoryservice:
+  order-history-service:
     build:
       context: ./order-history-service/
       args:
@@ -50,9 +50,9 @@ services:
       - "8083:8080"
     depends_on:
       - mongodb
-      - mysql
       - kafka
       - zookeeper
+      - cdc-service
     environment:
       MONGODB: mongodb
       KAFKA: kafka
@@ -101,7 +101,7 @@ services:
     ports:
       - "27017:27017"
 
-  cdcservice:
+  cdc-service:
     image: eventuateio/eventuate-cdc-service:$EVENTUATE_CDC_VERSION
     ports:
       - "8099:8080"
