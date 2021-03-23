@@ -1,7 +1,10 @@
 version: '3'
 services:
-  orderservice:
-    build: ./order-service/
+  order-service:
+    build:
+      context: ./order-service/
+      args:
+        baseImageVersion: ${EVENTUATE_JAVA_BASE_IMAGE_VERSION?}
     ports:
       - "8081:8080"
     volumes:
@@ -10,16 +13,20 @@ services:
       - postgres
       - kafka
       - zookeeper
-      - cdcservice
+      - cdc-service
     environment:
       POSTGRES: postgres
       KAFKA: kafka
       KAFKA_PORT: 29092
       ZOOKEEPER: zookeeper
       MICRONAUT_ENVIRONMENTS: postgres
+      JAVA_OPTS: -Xmx32m
 
-  customerservice:
-    build: ./customer-service/
+  customer-service:
+    build:
+      context: ./customer-service/
+      args:
+        baseImageVersion: ${EVENTUATE_JAVA_BASE_IMAGE_VERSION?}
     ports:
       - "8082:8080"
     volumes:
@@ -28,28 +35,33 @@ services:
       - postgres
       - kafka
       - zookeeper
-      - cdcservice
+      - cdc-service
     environment:
       POSTGRES: postgres
       KAFKA: kafka
       KAFKA_PORT: 29092
       ZOOKEEPER: zookeeper
       MICRONAUT_ENVIRONMENTS: postgres
+      JAVA_OPTS: -Xmx32m
 
-  orderhistoryservice:
-    build: ./order-history-service/
+  order-history-service:
+    build:
+      context: ./order-history-service/
+      args:
+        baseImageVersion: ${EVENTUATE_JAVA_BASE_IMAGE_VERSION?}
     ports:
       - "8083:8080"
     depends_on:
       - mongodb
-      - postgres
       - kafka
       - zookeeper
+      - cdc-service
     environment:
       MONGODB: mongodb
       KAFKA: kafka
       KAFKA_PORT: 29092
       ZOOKEEPER: zookeeper
+      JAVA_OPTS: -Xmx32m
 
   zookeeper:
     image: confluentinc/cp-zookeeper:5.2.4
@@ -57,9 +69,10 @@ services:
       - 2181:2181
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+      KAFKA_HEAP_OPTS: -Xmx64m
 
   kafka:
-    image: "confluentinc/cp-enterprise-kafka:5.2.4"
+    image: "confluentinc/cp-kafka:5.2.4"
     ports:
       - 9092:9092
       - 29092:29092
@@ -72,6 +85,7 @@ services:
       KAFKA_INTER_BROKER_LISTENER_NAME: LC
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_HEAP_OPTS: -Xmx192m
 
 
   postgres:
@@ -90,7 +104,7 @@ services:
     ports:
       - "27017:27017"
 
-  cdcservice:
+  cdc-service:
     image: eventuateio/eventuate-cdc-service:$EVENTUATE_CDC_VERSION
     ports:
       - "8099:8080"
@@ -102,14 +116,10 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres/eventuate
       SPRING_DATASOURCE_USERNAME: eventuate
       SPRING_DATASOURCE_PASSWORD: eventuate
-      SPRING_DATASOURCE_TEST_ON_BORROW: "true"
-      SPRING_DATASOURCE_VALIDATION_QUERY: SELECT 1
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
       EVENTUATELOCAL_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
       EVENTUATELOCAL_ZOOKEEPER_CONNECTION_STRING: zookeeper:2181
-      EVENTUATELOCAL_CDC_POLLING_INTERVAL_IN_MILLISECONDS: 500
-      EVENTUATELOCAL_CDC_MAX_EVENTS_PER_POLLING: 1000
-      EVENTUATELOCAL_CDC_MAX_ATTEMPTS_FOR_POLLING: 100
-      EVENTUATELOCAL_CDC_POLLING_RETRY_INTERVAL_IN_MILLISECONDS: 500
       EVENTUATELOCAL_CDC_READER_NAME: PostgresPollingReader
       SPRING_PROFILES_ACTIVE: EventuatePolling
+      EVENTUATE_OUTBOX_ID: 1
+      JAVA_OPTS: -Xmx64m
