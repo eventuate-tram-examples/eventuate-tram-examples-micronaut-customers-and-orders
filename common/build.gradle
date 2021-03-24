@@ -1,5 +1,5 @@
 dependencies {
-    compile "io.eventuate.tram.core:eventuate-tram-micronaut-events:$eventuateTramVersion"
+    compile "io.eventuate.tram.core:eventuate-tram-micronaut-events"
     compile 'javax.persistence:javax.persistence-api:2.2'
     compile "commons-lang:commons-lang:2.6"
 }
