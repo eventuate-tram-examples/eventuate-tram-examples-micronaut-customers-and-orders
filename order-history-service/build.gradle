@@ -29,7 +29,7 @@ dependencies {
     compile project(":order-service-api-events")
     compile project(":order-history-service-common")
 
-    compile "io.eventuate.tram.core:eventuate-tram-micronaut-consumer-kafka:$eventuateTramVersion"
+    compile "io.eventuate.tram.core:eventuate-tram-micronaut-consumer-kafka"
 
     compile "org.mongodb:mongo-java-driver"
     compile 'io.micronaut.configuration:micronaut-mongo-reactive'

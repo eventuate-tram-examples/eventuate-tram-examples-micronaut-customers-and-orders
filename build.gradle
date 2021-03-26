@@ -27,6 +27,9 @@ subprojects {
         eventuateMavenRepoUrl.split(',').each { repoUrl -> maven { url repoUrl } }
     }
 
+    dependencies {
+        implementation(platform("io.eventuate.platform:eventuate-platform-dependencies:$eventuatePlatformVersion"))
+    }
 }
 
 dockerCompose {
