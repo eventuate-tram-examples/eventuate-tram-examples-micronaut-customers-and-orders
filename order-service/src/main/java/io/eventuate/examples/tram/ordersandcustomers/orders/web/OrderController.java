@@ -10,7 +10,7 @@ import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Post;
-import io.micronaut.spring.tx.annotation.Transactional;
+import io.micronaut.transaction.annotation.TransactionalAdvice;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -33,7 +33,7 @@ public class OrderController {
   }
 
   @Get("/orders/{orderId}")
-  @Transactional
+  @TransactionalAdvice
   public HttpResponse<GetOrderResponse> getOrder(Long orderId) {
      return Optional.ofNullable(entityManager.find(Order.class, orderId))
             .map(order -> HttpResponse.ok(new GetOrderResponse(order.getId(), order.getState())))

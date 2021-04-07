@@ -34,4 +34,8 @@ public class OrderInfo {
   public OrderState getState() {
     return state;
   }
+
+  public void setState(OrderState state) {
+    this.state = state;
+  }
 }

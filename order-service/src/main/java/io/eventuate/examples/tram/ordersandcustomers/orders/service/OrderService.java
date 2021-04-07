@@ -7,7 +7,7 @@ import io.eventuate.examples.tram.ordersandcustomers.commondomain.OrderRejectedE
 import io.eventuate.examples.tram.ordersandcustomers.orders.domain.Order;
 import io.eventuate.tram.events.publisher.DomainEventPublisher;
 import io.eventuate.tram.events.publisher.ResultWithEvents;
-import io.micronaut.spring.tx.annotation.Transactional;
+import io.micronaut.transaction.annotation.TransactionalAdvice;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -26,7 +26,7 @@ public class OrderService {
   @PersistenceContext
   private EntityManager entityManager;
 
-  @Transactional
+  @TransactionalAdvice
   public Order createOrder(OrderDetails orderDetails) {
     ResultWithEvents<Order> orderWithEvents = Order.createOrder(orderDetails);
     Order order = orderWithEvents.result;

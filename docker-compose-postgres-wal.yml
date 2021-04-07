@@ -4,7 +4,7 @@ services:
     build:
       context: ./order-service/
       args:
-        baseImageVersion: ${EVENTUATE_JAVA_BASE_IMAGE_VERSION?}
+        baseImageVersion: ${EVENTUATE_JAVA_BASE_IMAGE_VERSION}
     ports:
       - "8081:8080"
     volumes:
@@ -26,7 +26,7 @@ services:
     build:
       context: ./customer-service/
       args:
-        baseImageVersion: ${EVENTUATE_JAVA_BASE_IMAGE_VERSION?}
+        baseImageVersion: ${EVENTUATE_JAVA_BASE_IMAGE_VERSION}
     ports:
       - "8082:8080"
     volumes:
@@ -48,7 +48,7 @@ services:
     build:
       context: ./order-history-service/
       args:
-        baseImageVersion: ${EVENTUATE_JAVA_BASE_IMAGE_VERSION?}
+        baseImageVersion: ${EVENTUATE_JAVA_BASE_IMAGE_VERSION}
     ports:
       - "8083:8080"
     depends_on:
@@ -94,12 +94,11 @@ services:
     environment:
       POSTGRES_USER: eventuate
       POSTGRES_PASSWORD: eventuate
-  
-  
+
+
   mongodb:
-    image: mongo:3.0.4
+    image: mongo:4.2.12
     hostname: mongodb
-    command: mongod --smallfiles
     ports:
       - "27017:27017"
   

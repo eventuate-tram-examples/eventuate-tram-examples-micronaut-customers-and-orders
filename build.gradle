@@ -48,10 +48,10 @@ dockerCompose {
         useComposeFiles = ["docker-compose-mysql-binlog.yml"]
     }
 
-    mysqlbinlogcdc {
+    mysqlbinloginfrastructure {
         projectName = null
         useComposeFiles = ["docker-compose-mysql-binlog.yml"]
-        startedServices = ["cdc-service"]
+        startedServices = ["cdc-service", "mongodb"]
     }
 
     postgrespolling {
@@ -59,10 +59,10 @@ dockerCompose {
         useComposeFiles = ["docker-compose-postgres-polling.yml"]
     }
 
-    postgrespollingcdc {
+    postgrespollinginfrastructure {
         projectName = null
         useComposeFiles = ["docker-compose-postgres-polling.yml"]
-        startedServices = ["cdc-service"]
+        startedServices = ["cdc-service", "mongodb"]
     }
 
     postgreswal {
@@ -70,10 +70,10 @@ dockerCompose {
         useComposeFiles = ["docker-compose-postgres-wal.yml"]
     }
 
-    postgreswalcdc {
+    postgreswalinfrastructure {
         projectName = null
         useComposeFiles = ["docker-compose-postgres-wal.yml"]
-        startedServices = ["cdc-service"]
+        startedServices = ["cdc-service", "mongodb"]
     }
 }
 
