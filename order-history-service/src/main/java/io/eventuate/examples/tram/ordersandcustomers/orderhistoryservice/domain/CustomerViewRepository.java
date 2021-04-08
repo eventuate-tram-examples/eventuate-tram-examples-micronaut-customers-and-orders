@@ -53,7 +53,7 @@ public class CustomerViewRepository extends AbstractRepository {
               .append("name", customerName)
               .append("creditLimit", creditLimit.getAmount());
 
-      findOneAndUpdate(customerId, new BasicDBObject("$set", customer));
+      findOneAndUpdate(customerId, customer);
     });
   }
 
@@ -69,9 +69,7 @@ public class CustomerViewRepository extends AbstractRepository {
 
   public void updateOrderState(Long customerId, Long orderId, OrderState state) {
     repeatOnFailure(() -> {
-      collection().findOneAndUpdate(new BasicDBObject("_id", customerId),
-              new BasicDBObject("$set", new BasicDBObject(String.format("orders.%s.state", orderId), state.name())),
-              upsertOptions());
+      findOneAndUpdate(customerId, new BasicDBObject(String.format("orders.%s.state", orderId), state.name()));
     });
   }
 }
