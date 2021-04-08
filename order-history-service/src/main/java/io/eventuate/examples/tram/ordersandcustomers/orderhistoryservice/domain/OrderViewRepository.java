@@ -5,7 +5,6 @@ import com.mongodb.client.MongoClient;
 import io.eventuate.examples.tram.ordersandcustomers.commondomain.Money;
 import io.eventuate.examples.tram.ordersandcustomers.commondomain.OrderState;
 import io.eventuate.examples.tram.ordersandcustomers.orderhistory.common.OrderView;
-import org.bson.Document;
 import java.util.Optional;
 
 public class OrderViewRepository extends AbstractRepository {
@@ -15,13 +14,8 @@ public class OrderViewRepository extends AbstractRepository {
   }
 
   public Optional<OrderView> findById(Long orderId) {
-    Document orderDocument = collection()
-            .find(new BasicDBObject("_id", orderId))
-            .first();
-
-    return Optional
-            .ofNullable(orderDocument)
-            .map(document -> {
+    return findOne(orderId)
+            .map(orderDocument -> {
 
               OrderView orderView = new OrderView(orderId, getMoney(orderDocument, "orderTotal"));
 
@@ -35,19 +29,13 @@ public class OrderViewRepository extends AbstractRepository {
 
   public void addOrder(Long orderId, Money orderTotal) {
     repeatOnFailure(() -> {
-      collection()
-              .findOneAndUpdate(new BasicDBObject("_id", orderId),
-                      new BasicDBObject("$set", new BasicDBObject("orderTotal", orderTotal.getAmount())),
-                      upsertOptions());
+      findOneAndUpdate(orderId, new BasicDBObject("orderTotal", orderTotal.getAmount()));
     });
   }
 
   public void updateOrderState(Long orderId, OrderState state) {
     repeatOnFailure(() -> {
-      collection()
-              .findOneAndUpdate(new BasicDBObject("_id", orderId),
-                      new BasicDBObject("$set", new BasicDBObject("state", state.name())),
-                      upsertOptions());
+      findOneAndUpdate(orderId, new BasicDBObject("state", state.name()));
     });
   }
 }

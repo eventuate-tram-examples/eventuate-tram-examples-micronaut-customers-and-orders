@@ -16,13 +16,8 @@ public class CustomerViewRepository extends AbstractRepository {
   }
 
   public Optional<CustomerView> findById(Long customerId) {
-    Document customerDocument = collection()
-            .find(new BasicDBObject("_id", customerId))
-            .first();
-
-    return Optional
-            .ofNullable(customerDocument)
-            .map(document -> {
+    return findOne(customerId)
+            .map(customerDocument -> {
               CustomerView customerView = new CustomerView();
 
               customerView.setId(customerId);
@@ -58,8 +53,7 @@ public class CustomerViewRepository extends AbstractRepository {
               .append("name", customerName)
               .append("creditLimit", creditLimit.getAmount());
 
-      collection().findOneAndUpdate(new BasicDBObject("_id", customerId),
-              new BasicDBObject("$set", customer), upsertOptions());
+      findOneAndUpdate(customerId, new BasicDBObject("$set", customer));
     });
   }
 
@@ -69,9 +63,7 @@ public class CustomerViewRepository extends AbstractRepository {
               .append("orderId", orderId)
               .append("orderTotal", orderTotal.getAmount());
 
-      collection().findOneAndUpdate(new BasicDBObject("_id", customerId),
-              new BasicDBObject("$set", new BasicDBObject("orders." + orderId, orderInfo)),
-              upsertOptions());
+      findOneAndUpdate(customerId, new BasicDBObject("orders." + orderId, orderInfo));
     });
   }
 

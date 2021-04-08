@@ -1,5 +1,6 @@
 package io.eventuate.examples.tram.ordersandcustomers.orderhistoryservice.domain;
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.MongoCommandException;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
@@ -21,6 +22,21 @@ public class AbstractRepository {
   public AbstractRepository(MongoClient mongoClient, String collection) {
     this.mongoClient = mongoClient;
     this.collection = collection;
+  }
+
+  protected void findOneAndUpdate(Long id, BasicDBObject newValue) {
+    collection().findOneAndUpdate(new BasicDBObject("_id", id),
+            new BasicDBObject("$set", newValue),
+            upsertOptions());
+  }
+
+  protected Optional<Document> findOne(Long id) {
+    Document customerDocument = collection()
+            .find(new BasicDBObject("_id", id))
+            .first();
+
+    return Optional
+            .ofNullable(customerDocument);
   }
 
   protected FindOneAndUpdateOptions upsertOptions() {
