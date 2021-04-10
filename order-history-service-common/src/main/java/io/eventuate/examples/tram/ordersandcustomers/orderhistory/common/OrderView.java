@@ -2,13 +2,9 @@ package io.eventuate.examples.tram.ordersandcustomers.orderhistory.common;
 
 import io.eventuate.examples.tram.ordersandcustomers.commondomain.Money;
 import io.eventuate.examples.tram.ordersandcustomers.commondomain.OrderState;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document
 public class OrderView {
 
-  @Id
   private Long id;
 
   private OrderState state;
@@ -30,5 +26,9 @@ public class OrderView {
 
   public OrderState getState() {
     return state;
+  }
+
+  public void setState(OrderState state) {
+    this.state = state;
   }
 }
