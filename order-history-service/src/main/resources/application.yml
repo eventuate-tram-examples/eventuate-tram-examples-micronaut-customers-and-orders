@@ -21,7 +21,7 @@ micronaut:
   router:
     static-resources:
       swagger-ui:
-        paths: classpath:META-INF/swagger-ui
+        paths: classpath:META-INF/static-content/swagger-ui
         mapping: /swagger-ui/**
       swagger:
         paths: classpath:META-INF/swagger
