@@ -10,6 +10,7 @@ import io.eventuate.examples.tram.ordersandcustomers.orders.webapi.CreateOrderRe
 import io.eventuate.examples.tram.ordersandcustomers.orders.webapi.CreateOrderResponse;
 import io.eventuate.examples.tram.ordersandcustomers.orders.webapi.GetOrderResponse;
 import io.eventuate.util.test.async.Eventually;
+import io.eventuate.util.test.async.UrlTesting;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -93,6 +95,17 @@ public class CustomersAndOrdersE2ETest{
       assertThat(orders.get(order1Id).getState(), is(OrderState.APPROVED));
       assertThat(orders.get(order2Id).getState(), is(OrderState.REJECTED));
     });
+  }
+
+  @Test
+  public void testSwaggerUiUrls() throws IOException {
+    testSwaggerUiUrl(8081);
+    testSwaggerUiUrl(8082);
+    testSwaggerUiUrl(8083);
+  }
+
+  private void testSwaggerUiUrl(int port) throws IOException {
+    UrlTesting.assertUrlStatusIsOk("localhost", port, "/swagger-ui/index.html");
   }
 
   private CustomerView getCustomerView(Long customerId) {
