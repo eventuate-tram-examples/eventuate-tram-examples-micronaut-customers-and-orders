@@ -101,7 +101,7 @@ services:
     hostname: mongodb
     ports:
       - "27017:27017"
-  
+
   cdc-service:
     image: eventuateio/eventuate-cdc-service:$EVENTUATE_CDC_VERSION
     ports:
