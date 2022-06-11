@@ -2,5 +2,5 @@
 
 docker run $* \
    --name mysqlterm --network=${PWD##*/}_default --rm \
-   mysql:5.7.13 \
+   mysql/mysql-server:8.0.27-1.2.6-server \
    sh -c 'exec mysql -h mysql  -uroot -prootpassword -o eventuate'

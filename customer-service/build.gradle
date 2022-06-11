@@ -41,7 +41,7 @@ dependencies {
     compile "io.swagger.core.v3:swagger-annotations"
     compile "io.eventuate.util:eventuate-util-swagger-ui:$eventuateUtilVersion"
 
-    runtime 'mysql:mysql-connector-java:5.1.36'
+    runtime 'mysql:mysql-connector-java:8.0.21'
     runtime ('org.postgresql:postgresql:9.4-1200-jdbc41') {
         exclude group: "org.slf4j", module: "slf4j-simple"
     }

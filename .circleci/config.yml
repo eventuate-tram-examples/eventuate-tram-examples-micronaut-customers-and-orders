@@ -1,48 +1,21 @@
-version: 2
+version: 2.1
+setup: true
+orbs:
+  eventuate-gradle-build-and-test: "eventuate_io/eventuate-gradle-build-and-test@0.2.1"
+  continuation: circleci/continuation@0.1.2
 jobs:
-  build:
-    machine: true
-    working_directory: ~/eventuate-tram-examples-micronaut-customers-and-orders
+  setup:
+    executor: continuation/default
     steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - eventuate-tram-examples-micronaut-customers-and-orders-{{ checksum "gradle.properties" }}
-            - eventuate-tram-examples-micronaut-customers-and-orders-
-      - run:
-          command: ./.circleci/upgrade-docker-compose.sh
-      - run:
+      - checkout # checkout code
+      - run: # run a command
+          name: Generate config
           command: |
-            . ./.circleci/setenv-circle-ci.sh
-            ./gradlew testClasses
-      - save_cache:
-          paths:
-            - ~/.gradle
-          key: eventuate-tram-examples-micronaut-customers-and-orders-{{ checksum "gradle.properties" }}
-      - run:
-          command: |
-            . ./.circleci/setenv-circle-ci.sh
-            ./build-and-test-all-mysql-binlog.sh
-      - run:
-          command: |
-            . ./.circleci/setenv-circle-ci.sh
-            ./build-and-test-all-postgres-polling.sh
-      - run:
-          command: |
-            . ./.circleci/setenv-circle-ci.sh
-            ./build-and-test-all-postgres-wal.sh
-      - run:
-          name: Save test results
-          command: |
-            mkdir -p ~/junit ~/container-logs
-            docker ps -a > ~/container-logs/containers.txt
-            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/junit/ \;
-            sudo bash -c 'find /var/lib/docker/containers -name "*-json.log" -exec cp {} ~/container-logs \;'
-            sudo bash -c 'find  ~/container-logs -type f -exec chown circleci {} \;'
-          when: always
-      - store_test_results:
-          path: ~/junit
-      - store_artifacts:
-          path: ~/junit
-      - store_artifacts:
-          path: ~/container-logs
+            ./.circleci/generate-config.sh > generated_config.yml
+      - continuation/continue:
+          configuration_path: generated_config.yml
+
+workflows:
+  setup:
+    jobs:
+      - setup
