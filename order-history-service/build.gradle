@@ -5,10 +5,6 @@ plugins {
     id "application"
 }
 
-repositories {
-    mavenCentral()
-    maven { url "https://jcenter.bintray.com" }
-}
 
 apply plugin: 'docker-compose'
 
